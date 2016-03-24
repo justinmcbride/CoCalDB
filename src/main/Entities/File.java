@@ -21,17 +21,18 @@ public abstract class File<T> {
         m_value = value;
         m_fileLocation = myPath;
         System.out.println( "File: " + myPath );
+        CommitChange();
     }
 
     public abstract T ConvertValue( String s ) throws ParseException;
 
-    public void CommitChange() {
+    public void CommitChange(){
         try( BufferedWriter writer = Files.newBufferedWriter(m_fileLocation) ) {
-            System.out.println( m_value.toString() );
+            System.out.println( "value: " + m_value.toString() );
             writer.write( m_value.toString() );
         }
         catch (Exception e) {
-            System.out.println( e.getMessage() );
+            System.out.println( "error: " + e);
         }
         finally {
         }
