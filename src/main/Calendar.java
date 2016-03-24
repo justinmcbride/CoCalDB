@@ -31,7 +31,7 @@ public class Calendar {
         System.out.println( "Path: " + m_filepath );
 
         name = new StringFile( "name", m_filepath.resolve( "title" ) );
-        owner = new idFile( 0, m_filepath.resolve( "cost" ) );
-        events = new idFile(1, m_filepath.resolve( "location" ) );
+        //owner = new idFile( 0, m_filepath.resolve( "cost" ) );
+        //events = new idFile(1, m_filepath.resolve( "location" ) );
     }
 }
