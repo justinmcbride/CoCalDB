@@ -1,14 +1,15 @@
-package main;
+package Test;
 
-import Entities.File;
-
+import main.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
  * Created by justinmcbride on 3/23/16.
+ *
+ * Test file for basic cocal db system using direct file access
  */
-public class main {
+public class testDriver1 {
 
     public static void main(String[] args) {
         Path home = Paths.get(System.getProperty("user.home"));

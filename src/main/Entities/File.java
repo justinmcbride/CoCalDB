@@ -1,4 +1,4 @@
-package Entities;
+package main.Entities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +9,8 @@ import java.text.ParseException;
 
 /**
  * Created by justinmcbride on 3/23/16.
- * defines a generic constructing for encapsulating file operations
+ * defines a generic class for encapsulating file operations
+ * on files that store the variables of the CoCal primary classes
  */
 public abstract class File<T> {
     Path m_fileLocation;

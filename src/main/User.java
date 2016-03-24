@@ -1,10 +1,10 @@
 package main;
-import Entities.*;
+import main.Entities.*;
 import java.util.ArrayList;
 
 /**
  * Created by Warren on 3/23/2016.
- * Defines the User class for cocal
+ * Defines the User class for CoCal
  */
 
 public class User {

@@ -1,12 +1,13 @@
-package main;
+package main.Entities;
 
-import Entities.File;
+import main.Entities.File;
 
 import java.nio.file.Path;
 import java.text.ParseException;
 
 /**
  * Created by justinmcbride on 3/23/16.
+ * Concrete class for File<String>
  */
 public class StringFile extends File<String> {
     @Override

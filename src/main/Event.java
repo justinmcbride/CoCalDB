@@ -1,11 +1,13 @@
 package main;
-import Entities.File;
+
+import main.Entities.FloatFile;
+import main.Entities.StringFile;
 
 import java.nio.file.Path;
 
 /**
  * Created by Warren on 3/23/2016.
- * Defines the Event class for Cocal
+ * Defines the Event class for CoCal
  */
 public class Event /* implements Commitable */ {
 
@@ -27,7 +29,7 @@ public class Event /* implements Commitable */ {
     private StringFile date;
     private StringFile category;
 
-    Event( Path parentPath ) {
+    public Event( Path parentPath ) {
         System.out.println( "Path in: " + parentPath.toString() );
         m_filepath = parentPath.resolve( getNextID().toString() );
 

@@ -1,4 +1,4 @@
-package Entities;
+package main.Entities;
 
 import main.*;
 
@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Created by justinmcbride on 3/23/16.
+ * Defines the singleton instance for controlling access to the CoCal database
  */
 public class Database {
     private Path m_root_path;
