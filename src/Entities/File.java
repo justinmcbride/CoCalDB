@@ -1,6 +1,8 @@
 package Entities;
 
 import java.nio.file.Files;
+import main.User;
+
 import java.nio.file.Path;
 
 /**
