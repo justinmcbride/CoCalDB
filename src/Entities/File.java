@@ -1,15 +1,17 @@
 package Entities;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 
 /**
  * Created by justinmcbride on 3/23/16.
  * defines a generic constructing for encapsulating file operations
  */
-public class File<T> {
+public abstract class File<T> {
     Path m_fileLocation;
     T m_value;
 
@@ -17,17 +19,10 @@ public class File<T> {
     {
         m_value = value;
         m_fileLocation = myPath;
+        System.out.println( "File: " + myPath );
     }
 
-    public void SetValue( T newValue, boolean commit ) {
-        m_value = newValue;
-
-        if( commit ) CommitChange();
-    }
-
-    public void SetValue( T newValue ) {
-        SetValue( newValue, false );
-    }
+    public abstract T ConvertValue( String s ) throws ParseException;
 
     public void CommitChange() {
         try( BufferedWriter writer = Files.newBufferedWriter(m_fileLocation) ) {
@@ -41,8 +36,38 @@ public class File<T> {
         }
     }
 
-    T ReadValue() {
+    public void Refresh() {
+        try(BufferedReader reader = Files.newBufferedReader(m_fileLocation) ) {
+            String line = null;
+            line = reader.readLine();
+            m_value = ConvertValue( line );
+        }
+        catch( ParseException e ) {
+            System.out.println( "Couldn't convert value: " + e.getMessage() );
+        }
+        catch( IOException e )
+        {
+            System.out.println( "Error reading value: " + e.getMessage() );
+        }
+    }
+
+    public T ReadValue( boolean refresh ) {
+        if( refresh ) Refresh();
         return m_value;
+    }
+
+    public T ReadValue() {
+        return ReadValue( false );
+    }
+
+    public void SetValue( T newValue, boolean commit ) {
+        m_value = newValue;
+
+        if( commit ) CommitChange();
+    }
+
+    public void SetValue( T newValue ) {
+        SetValue( newValue, false );
     }
 
 }

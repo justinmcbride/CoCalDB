@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 
 public class User {
-    File<String> name;
-    File<String> email;
-    File<String> password;
+    StringFile name;
+    StringFile email;
+    StringFile password;
     File<Boolean> isadmin;
     ArrayList<ID> groups;
     ID calendar;

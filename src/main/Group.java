@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Defines the Group class for Cocal
  */
 public class Group {
-    File<String> name;
+    StringFile name;
     ArrayList<ID> members;
     ID calendar;
 }

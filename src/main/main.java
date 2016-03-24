@@ -2,6 +2,7 @@ package main;
 
 import Entities.File;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -10,8 +11,14 @@ import java.nio.file.Paths;
 public class main {
 
     public static void main(String[] args) {
-        File<Integer> blahFile = new File<>( 17, Paths.get(System.getProperty("user.home"), "test.txt") );
-        blahFile.CommitChange( 16 );
+        Path home = Paths.get(System.getProperty("user.home"));
+        System.out.println( "Home: " + home.toString() );
+//        IntegerFile blahFile = new IntegerFile( 17,Paths.get(System.getProperty("user.home"), "test.txt") );
+//        blahFile.SetValue( 15, true );
+        Path path_events = home.resolve( "events" );
+        new Event( path_events );
+        new Event( path_events );
+        new Event( path_events );
     }
 
 }

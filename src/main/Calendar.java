@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Defines the calendar object for Cocal
  */
 public class Calendar {
-    File<String> name;
+    StringFile name;
     ID owner;
     ArrayList<ID> events;
 }

@@ -9,21 +9,36 @@ import java.nio.file.Path;
  */
 public class Event /* implements Commitable */ {
 
-    static Integer getID() {
-        int i = 0;
-        return i++;
+    // a unique id for each event to have
+    static Integer __id = 0;
+    static String getNextID() {
+        String s = __id.toString();
+        __id++;
+        return s;
     }
+
+    private Path m_filepath; // the path to this specific event's directory
+
+    // the following are all attributes of the event
+    private StringFile title;
+    private FloatFile cost;
+    private StringFile location;
+    private StringFile description;
+    private StringFile date;
+    private StringFile category;
 
     Event( Path parentPath ) {
-        m_filepath = parentPath.resolve("/events/").resolve( getID().toString() );
-        title = new File<>( "mytitle", m_filepath.resolve("title") );
-    }
-    Path m_filepath;
+        System.out.println( "Path in: " + parentPath.toString() );
+        m_filepath = parentPath.resolve( getNextID().toString() );
 
-    File<String> title;
-    File<Float> cost;
-    File<String> location;
-    File<String> description;
-    File<String> date;
-    File<String> category;
+        System.out.println( "Path: " + m_filepath );
+
+        title = new StringFile( "", m_filepath.resolve( "title" ) );
+        cost = new FloatFile( 0.0f, m_filepath.resolve( "cost" ) );
+        location = new StringFile( "", m_filepath.resolve( "location" ) );
+        description = new StringFile( "", m_filepath.resolve( "description" ) );
+        date = new StringFile( "", m_filepath.resolve( "date" ) );
+        category = new StringFile( "", m_filepath.resolve( "category" ) );
+
+    }
 }
