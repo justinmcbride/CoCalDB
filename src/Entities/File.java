@@ -1,5 +1,6 @@
 package Entities;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -9,14 +10,15 @@ public class File<T> {
     Path m_fileLocation;
     T m_value;
 
-    File( T value )
+    public File( T value, Path myPath )
     {
         m_value = value;
+        m_fileLocation = myPath;
         CommitChange( m_value );
     }
 
     Boolean CommitChange(T newValue) {
-
+//        Files.write( m_fileLocation, )
         return true;
     }
 
