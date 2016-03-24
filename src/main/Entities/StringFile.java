@@ -10,13 +10,13 @@ import java.text.ParseException;
  * Concrete class for File<String>
  */
 public class StringFile extends File<String> {
-    @Override
+    public StringFile( String value, Path myPath ) {
+        super( value, myPath );
+    }
+
     public String ConvertValue(String s) throws ParseException {
 //        throw new ParseException( "hello", 2 );
         return s;
     }
-
-    public StringFile( String value, Path myPath ) {
-        super( value, myPath );
-    }
+    //@Override
 }

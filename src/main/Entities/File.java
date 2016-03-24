@@ -33,6 +33,7 @@ public abstract class File<T> {
         }
         catch (Exception e) {
             System.out.println( "error: " + e);
+            e.printStackTrace();
         }
         finally {
         }
@@ -45,11 +46,11 @@ public abstract class File<T> {
             m_value = ConvertValue( line );
         }
         catch( ParseException e ) {
-            System.out.println( "Couldn't convert value: " + e.getMessage() );
+            System.out.println( "Couldn't convert value: " + e );
         }
         catch( IOException e )
         {
-            System.out.println( "Error reading value: " + e.getMessage() );
+            System.out.println( "Error reading value: " + e );
         }
     }
 

@@ -10,7 +10,11 @@ import java.text.ParseException;
  * Concrete class for File<Float>
  */
 public class FloatFile extends File<Float> {
-    @Override
+
+    public FloatFile( Float value, Path myPath ) {
+        super( value, myPath );
+    }
+
     public Float ConvertValue(String s) throws ParseException {
         try {
             return Float.parseFloat( s );
@@ -20,7 +24,6 @@ public class FloatFile extends File<Float> {
         }
     }
 
-    public FloatFile( Float value, Path myPath ) {
-        super( value, myPath );
-    }
+
+    //@Override
 }

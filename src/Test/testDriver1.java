@@ -15,12 +15,13 @@ public class testDriver1 {
         //Path pDB = Paths.get(System.getProperty("user.home"));
         Path pDB  = Paths.get(System.getProperty("user.dir")).resolve("testDB");
         System.out.println( "WorkDir: " + pDB.toString() );
-//        IntegerFile blahFile = new IntegerFile( 17,Paths.get(System.getProperty("user.home"), "test.txt") );
+//        idFile blahFile = new idFile( 17,Paths.get(System.getProperty("user.home"), "test.txt") );
 //        blahFile.SetValue( 15, true );
-        Path path_events = pDB.resolve( "events" );
-        new Event( path_events );
-        //new Event( path_events );
-        //new Event( path_events );
+
+        new Event( pDB );
+        //new Event( pDB );
+        //new Event( pDB );
+        //new Event( pDB );
     }
 
 }

@@ -8,6 +8,6 @@ import java.util.ArrayList;
  */
 public class Group {
     StringFile name;
-    ArrayList<ID> members;
-    ID calendar;
+    ArrayList<id> members;
+    id calendar;
 }

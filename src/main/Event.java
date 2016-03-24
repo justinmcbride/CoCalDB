@@ -14,7 +14,6 @@ public class Event /* implements Commitable */ {
 
     // a unique id for each event to have
     static Integer __id = 0;
-
     static String getNextID() {
         String s = __id.toString();
         __id++;
@@ -32,17 +31,18 @@ public class Event /* implements Commitable */ {
     private StringFile category;
 
     public Event( Path parentPath ) {
-        System.out.println( "Path in: " + parentPath.toString() );
-        m_filepath = parentPath.resolve( getNextID().toString() );
-        new File(m_filepath.toString()).mkdirs();                // placed here to not repeat with each variable
+        Path path_events = parentPath.resolve( "events" );
+        System.out.println( "Path in: " + path_events.toString() );
+        m_filepath = path_events.resolve( getNextID().toString() );
+        new File(m_filepath.toString()).mkdirs();                // placed here to not repeat with each attribute
         System.out.println( "Path: " + m_filepath );
 
-        title = new StringFile( "", m_filepath.resolve( "title" ) );
+        title = new StringFile( "titleTEST", m_filepath.resolve( "title" ) );
         cost = new FloatFile( 0.0f, m_filepath.resolve( "cost" ) );
-        location = new StringFile( "", m_filepath.resolve( "location" ) );
-        description = new StringFile( "", m_filepath.resolve( "description" ) );
-        date = new StringFile( "", m_filepath.resolve( "date" ) );
-        category = new StringFile( "", m_filepath.resolve( "category" ) );
+        location = new StringFile( "locationTEST", m_filepath.resolve( "location" ) );
+        description = new StringFile( "descTEST", m_filepath.resolve( "description" ) );
+        date = new StringFile( "dateTEST", m_filepath.resolve( "date" ) );
+        category = new StringFile( "categoryTEST", m_filepath.resolve( "category" ) );
 
     }
 }
