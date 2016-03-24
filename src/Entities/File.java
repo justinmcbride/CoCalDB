@@ -1,8 +1,8 @@
 package Entities;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.nio.file.Files;
-import main.User;
-
 import java.nio.file.Path;
 
 /**
@@ -17,12 +17,28 @@ public class File<T> {
     {
         m_value = value;
         m_fileLocation = myPath;
-        CommitChange( m_value );
     }
 
-    public boolean CommitChange(T newValue) {
-//        Files.write( m_fileLocation, )
-        return true;
+    public void SetValue( T newValue, boolean commit ) {
+        m_value = newValue;
+
+        if( commit ) CommitChange();
+    }
+
+    public void SetValue( T newValue ) {
+        SetValue( newValue, false );
+    }
+
+    public void CommitChange() {
+        try( BufferedWriter writer = Files.newBufferedWriter(m_fileLocation) ) {
+            System.out.println( m_value.toString() );
+            writer.write( m_value.toString() );
+        }
+        catch (Exception e) {
+            System.out.println( e.getMessage() );
+        }
+        finally {
+        }
     }
 
     T ReadValue() {
