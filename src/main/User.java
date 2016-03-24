@@ -1,6 +1,9 @@
 package main;
 
 import Entities.File;
+import Entities.ID;
+
+import java.util.ArrayList;
 
 /**
  * Created by Warren on 3/23/2016.
@@ -10,6 +13,7 @@ public class User {
     File<String> email;
     File<String> password;
     File<Boolean> isadmin;
-    File<ID> groups;
-    File<ID> calendar;
+    ArrayList<ID> groups;
+    ID calendar;
+
 }
