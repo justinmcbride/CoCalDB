@@ -1,12 +1,10 @@
 package main;
-
-import Entities.File;
-import Entities.ID;
-
+import Entities.*;
 import java.util.ArrayList;
 
 /**
  * Created by Warren on 3/23/2016.
+ * Defines the calendar object for Cocal
  */
 public class Calendar {
     File<String> name;

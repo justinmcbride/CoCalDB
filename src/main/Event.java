@@ -1,11 +1,11 @@
 package main;
-
 import Entities.File;
 
 import java.nio.file.Path;
 
 /**
  * Created by Warren on 3/23/2016.
+ * Defines the Event class for Cocal
  */
 public class Event /* implements Commitable */ {
 

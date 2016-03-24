@@ -7,6 +7,7 @@ import java.nio.file.Path;
 
 /**
  * Created by justinmcbride on 3/23/16.
+ * defines a generic constructing for encapsulating file operations
  */
 public class File<T> {
     Path m_fileLocation;
@@ -19,7 +20,7 @@ public class File<T> {
         CommitChange( m_value );
     }
 
-    Boolean CommitChange(T newValue) {
+    public boolean CommitChange(T newValue) {
 //        Files.write( m_fileLocation, )
         return true;
     }
