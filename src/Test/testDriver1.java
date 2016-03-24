@@ -12,14 +12,15 @@ import java.nio.file.Paths;
 public class testDriver1 {
 
     public static void main(String[] args) {
-        Path home = Paths.get(System.getProperty("user.home"));
-        System.out.println( "Home: " + home.toString() );
+        //Path pDB = Paths.get(System.getProperty("user.home"));
+        Path pDB  = Paths.get(System.getProperty("user.dir")).resolve("testDB");
+        System.out.println( "WorkDir: " + pDB.toString() );
 //        IntegerFile blahFile = new IntegerFile( 17,Paths.get(System.getProperty("user.home"), "test.txt") );
 //        blahFile.SetValue( 15, true );
-        Path path_events = home.resolve( "events" );
+        Path path_events = pDB.resolve( "events" );
         new Event( path_events );
-        new Event( path_events );
-        new Event( path_events );
+        //new Event( path_events );
+        //new Event( path_events );
     }
 
 }
