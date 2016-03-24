@@ -5,7 +5,7 @@ import Entities.File;
 /**
  * Created by Warren on 3/23/2016.
  */
-public class Events /* implements Commitable */ {
+public class Event /* implements Commitable */ {
     File<String> title;
     File<Float> cost;
     File<String> location;

@@ -9,8 +9,14 @@ public class File<T> {
     Path m_fileLocation;
     T m_value;
 
+    File( T value )
+    {
+        m_value = value;
+        CommitChange( m_value );
+    }
 
     Boolean CommitChange(T newValue) {
+
         return true;
     }
 
