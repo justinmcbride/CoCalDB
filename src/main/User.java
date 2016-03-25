@@ -12,7 +12,6 @@ public class User {
     StringFile email;
     StringFile password;
     File<Boolean> isadmin;
-    ArrayList<id> groups;
-    id calendar;
-
+//    ArrayList<id> groups;
+//    id calendar;
 }

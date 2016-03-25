@@ -20,8 +20,8 @@ public class Calendar {
 
     // the following are all attributes of the calendar
     private StringFile name;
-    private idFile owner;
-    private idFile events; //ArrayList<id> events;
+//    private idFile owner;
+//    private idFile events; //ArrayList<id> events;
 
     public Calendar( Path parentPath ) {
         Path path_events = parentPath.resolve( "calendars" );

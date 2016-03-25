@@ -3,6 +3,7 @@ package Test;
 import main.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * Created by justinmcbride on 3/23/16.
@@ -18,10 +19,22 @@ public class testDriver1 {
 //        idFile blahFile = new idFile( 17,Paths.get(System.getProperty("user.home"), "test.txt") );
 //        blahFile.SetValue( 15, true );
 
+        System.out.println( "------------------------------------------" );
         new Event( pDB );
+//        new Event( pDB );
+//        new Event( pDB );
         //new Event( pDB );
-        //new Event( pDB );
-        //new Event( pDB );
+
+        System.out.println( "------------------------------------------" );
+        ArrayList<String> members = new ArrayList<>();
+        members.add( "justin" );
+        members.add( "warren" );
+
+        new Group( pDB, members );
+
+        System.out.println( "------------------------------------------" );
+        members.add( "adrian" );
+        new Group( pDB, members );
     }
 
 }

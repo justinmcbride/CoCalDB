@@ -1,16 +1,19 @@
 package main;
 
+import main.Entities.DirectoryMaker;
 import main.Entities.FloatFile;
+import main.Entities.ReferenceList;
 import main.Entities.StringFile;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
  * Created by Warren on 3/23/2016.
  * Defines the Event class for CoCal
  */
-public class Event /* implements Commitable */ {
+public class Event /* implements Commitable */ extends DirectoryMaker {
 
     // a unique id for each event to have
     static Integer __id = 0;
@@ -29,12 +32,12 @@ public class Event /* implements Commitable */ {
     private StringFile description;
     private StringFile date;
     private StringFile category;
+    private ReferenceList owner;
 
     public Event( Path parentPath ) {
         Path path_events = parentPath.resolve( "events" );
-        System.out.println( "Path in: " + path_events.toString() );
         m_filepath = path_events.resolve( getNextID().toString() );
-        new File(m_filepath.toString()).mkdirs();                // placed here to not repeat with each attribute
+        CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
 
         title = new StringFile( "titleTEST", m_filepath.resolve( "title" ) );
@@ -43,6 +46,7 @@ public class Event /* implements Commitable */ {
         description = new StringFile( "descTEST", m_filepath.resolve( "description" ) );
         date = new StringFile( "dateTEST", m_filepath.resolve( "date" ) );
         category = new StringFile( "categoryTEST", m_filepath.resolve( "category" ) );
+        owner = new ReferenceList( "justin", m_filepath.resolve( "owner" ) );
 
     }
 }

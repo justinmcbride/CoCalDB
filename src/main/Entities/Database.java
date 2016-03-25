@@ -17,10 +17,10 @@ public class Database {
     private Path m_root_path;
     private boolean m_initialized;
 
-    private Map<id, Calendar> m_collection_calendars;
-    private Map<id, User> m_collection_users;
-    private Map<id, Event> m_collection_events;
-    private Map<id, Group> m_collection_groups;
+//    private Map<id, Calendar> m_collection_calendars;
+//    private Map<id, User> m_collection_users;
+//    private Map<id, Event> m_collection_events;
+//    private Map<id, Group> m_collection_groups;
 
     public Database(Path rootLocation) {
         m_root_path = rootLocation;
@@ -37,21 +37,21 @@ public class Database {
         return m_initialized;
     }
 
-    public Calendar GetCalendar( id id ) {
-        return m_collection_calendars.get(id);
-    }
-
-    public User GetUser( id id ) {
-        return m_collection_users.get(id);
-    }
-
-    public Event GetEvent( id id ) {
-        return m_collection_events.get(id);
-    }
-
-    public Group GetGroup( id id ) {
-        return m_collection_groups.get(id);
-    }
+//    public Calendar GetCalendar( id id ) {
+//        return m_collection_calendars.get(id);
+//    }
+//
+//    public User GetUser( id id ) {
+//        return m_collection_users.get(id);
+//    }
+//
+//    public Event GetEvent( id id ) {
+//        return m_collection_events.get(id);
+//    }
+//
+//    public Group GetGroup( id id ) {
+//        return m_collection_groups.get(id);
+//    }
 
     private boolean CreateRoot() {
         System.out.println( "Creating new database at location: " + m_root_path.toString() );
