@@ -6,9 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Created by justinmcbride on 3/24/16.
+ * Abstract class so that CoCal classes can create directories
  */
 public abstract class DirectoryMaker {
+
     protected Boolean CreateDirectory( Path path )
     {
         try {

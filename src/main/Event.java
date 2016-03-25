@@ -14,7 +14,6 @@ import java.nio.file.Path;
  * Defines the Event class for CoCal
  */
 public class Event /* implements Commitable */ extends DirectoryMaker {
-
     // a unique id for each event to have
     static Integer __id = 0;
     static String getNextID() {
@@ -48,5 +47,9 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         category = new StringFile( "categoryTEST", m_filepath.resolve( "category" ) );
         owner = new ReferenceList( "justin", m_filepath.resolve( "owner" ) );
 
+    }
+    static boolean initalize(){
+        File folder = new File("your/path");
+        return true;
     }
 }

@@ -1,6 +1,8 @@
 package Test;
 
 import main.*;
+import main.Entities.*;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -32,9 +34,12 @@ public class testDriver1 {
 
         new Group( pDB, members );
 
-        System.out.println( "------------------------------------------" );
-        members.add( "adrian" );
-        new Group( pDB, members );
+        Database DB = new Database(pDB);
+
+        User justin = new User(pDB);
+//        System.out.println( "------------------------------------------" );
+//        members.add( "adrian" );
+//        new Group( pDB, members );
     }
 
 }

@@ -23,16 +23,14 @@ public class Group extends DirectoryMaker {
     private ReferenceList members;
     private ReferenceList calendar;
 
-
-
     public Group( Path parentPath, ArrayList<String> members_list ) {
         m_filepath = parentPath.resolve( "groups" );
         m_filepath = m_filepath.resolve( getNextID() );
         System.out.println( "Path: " + m_filepath );
         CreateDirectory( m_filepath );
-        name = new StringFile( "", m_filepath.resolve( "name" ) );
+        name = new StringFile( "group" + __id, m_filepath.resolve( "name" ) );
         members = new ReferenceList( members_list, m_filepath.resolve( "members" ) );
-        calendar = new ReferenceList( "REFERENCEHERE", m_filepath.resolve( "calendar" ) );
+        calendar = new ReferenceList( name + "Calendar", m_filepath.resolve( "calendar" ) );
     }
 
 }
