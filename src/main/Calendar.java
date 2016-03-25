@@ -16,22 +16,23 @@ public class Calendar {
         __id++;
         return s;
     }
-    private Path m_filepath; // the path to this specific event's directory
+    private Path m_filepath; // the path to this specific calendar's directory
 
     // the following are all attributes of the calendar
-    private StringFile name;
-//    private idFile owner;
-//    private idFile events; //ArrayList<id> events;
+    private StringFile m_name;
+    private ReferenceList m_owner;
+    private ReferenceList m_events;
 
-    public Calendar( Path parentPath ) {
+
+    public Calendar( Path parentPath , String name, String user) {
         Path path_events = parentPath.resolve( "calendars" );
         System.out.println( "Path in: " + path_events.toString() );
         m_filepath = path_events.resolve( getNextID().toString() );
         new File(m_filepath.toString()).mkdirs();                // placed here to not repeat with each attribute
         System.out.println( "Path: " + m_filepath );
 
-        name = new StringFile( "name", m_filepath.resolve( "title" ) );
-        //owner = new idFile( 0, m_filepath.resolve( "cost" ) );
-        //events = new idFile(1, m_filepath.resolve( "location" ) );
+        m_name = new StringFile( name, m_filepath.resolve( "title" ) );
+        m_owner = new ReferenceList( user, m_filepath.resolve( "owners" ) );
+        m_events = new ReferenceList( m_filepath.resolve( "events" ) );
     }
 }

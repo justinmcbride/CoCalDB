@@ -32,11 +32,11 @@ public class testDriver1 {
         members.add( "justin" );
         members.add( "warren" );
 
-        new Group( pDB, members );
+        new Group( pDB, "devTeam", members );
 
         Database DB = new Database(pDB);
 
-        User justin = new User(pDB);
+        User justin = new User(pDB, "justin");
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );
 //        new Group( pDB, members );

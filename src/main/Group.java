@@ -19,18 +19,19 @@ public class Group extends DirectoryMaker {
     }
 
     private Path m_filepath;
-    private StringFile name;
-    private ReferenceList members;
-    private ReferenceList calendar;
+    private StringFile m_name;
+    private ReferenceList m_members;
+    private ReferenceList m_calendar;
 
-    public Group( Path parentPath, ArrayList<String> members_list ) {
+    public Group( Path parentPath, String name, ArrayList<String> members_list ) {
         m_filepath = parentPath.resolve( "groups" );
         m_filepath = m_filepath.resolve( getNextID() );
         System.out.println( "Path: " + m_filepath );
         CreateDirectory( m_filepath );
-        name = new StringFile( "group" + __id, m_filepath.resolve( "name" ) );
-        members = new ReferenceList( members_list, m_filepath.resolve( "members" ) );
-        calendar = new ReferenceList( name + "Calendar", m_filepath.resolve( "calendar" ) );
+        m_name = new StringFile( "group" + __id, m_filepath.resolve( "name" ) );
+        m_members = new ReferenceList( members_list, m_filepath.resolve( "members" ) );
+        Calendar m_Cal = new Calendar(parentPath, name + "Calendar", name);
+        m_calendar = new ReferenceList( name + "Calendar", m_filepath.resolve( "calendar" ) );
     }
 
 }

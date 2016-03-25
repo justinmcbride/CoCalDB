@@ -25,13 +25,12 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
     private Path m_filepath; // the path to this specific event's directory
 
     // the following are all attributes of the event
-    private StringFile title;
-    private FloatFile cost;
-    private StringFile location;
-    private StringFile description;
-    private StringFile date;
-    private StringFile category;
-    private ReferenceList owner;
+    private StringFile m_title;
+    private FloatFile m_cost;
+    private StringFile m_location;
+    private StringFile m_description;
+    private StringFile m_date;
+    private StringFile m_category;
 
     public Event( Path parentPath ) {
         Path path_events = parentPath.resolve( "events" );
@@ -39,13 +38,12 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
 
-        title = new StringFile( "titleTEST", m_filepath.resolve( "title" ) );
-        cost = new FloatFile( 0.0f, m_filepath.resolve( "cost" ) );
-        location = new StringFile( "locationTEST", m_filepath.resolve( "location" ) );
-        description = new StringFile( "descTEST", m_filepath.resolve( "description" ) );
-        date = new StringFile( "dateTEST", m_filepath.resolve( "date" ) );
-        category = new StringFile( "categoryTEST", m_filepath.resolve( "category" ) );
-        owner = new ReferenceList( "justin", m_filepath.resolve( "owner" ) );
+        m_title = new StringFile( "titleTEST", m_filepath.resolve( "title" ) );
+        m_cost = new FloatFile( 0.0f, m_filepath.resolve( "cost" ) );
+        m_location = new StringFile( "locationTEST", m_filepath.resolve( "location" ) );
+        m_description = new StringFile( "descTEST", m_filepath.resolve( "description" ) );
+        m_date = new StringFile( "dateTEST", m_filepath.resolve( "date" ) );
+        m_category = new StringFile( "categoryTEST", m_filepath.resolve( "category" ) );
 
     }
     static boolean initalize(){
