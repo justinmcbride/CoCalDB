@@ -37,6 +37,7 @@ public class testDriver1 {
         Database DB = new Database(pDB);
 
         User justin = new User(pDB, "justin");
+        Calendar bobCal = new Calendar(pDB, "bobCal", "justin");
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );
 //        new Group( pDB, members );

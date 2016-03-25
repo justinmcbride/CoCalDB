@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Defines the User class for CoCal
  */
 
-class User extends DirectoryMaker{
+public class User extends DirectoryMaker{
     static Integer __id = 0;
     static String getNextID() {
         String s = __id.toString();
