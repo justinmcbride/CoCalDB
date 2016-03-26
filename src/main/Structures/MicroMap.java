@@ -26,6 +26,13 @@ public final class MicroMap<K, V> implements java.io.Serializable
 
     public boolean containsValue(final Object value) {return value.equals(this.value);}
 
+    public K getKey(){
+        return key;
+    }
+
+    public V getVal() {
+        return value;
+    }
     public V get(final Object key) {
         if (key.equals(this.key))
             return value;

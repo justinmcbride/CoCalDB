@@ -24,6 +24,7 @@ public class Database {
 
     public Database(Path rootLocation) {
         m_root_path = rootLocation;
+        dbThrd.m_root_path = m_root_path;
         m_initialized = false;
     }
 

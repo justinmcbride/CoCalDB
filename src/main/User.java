@@ -3,6 +3,8 @@ import main.Entities.*;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Warren on 3/23/2016.
@@ -25,7 +27,7 @@ public class User extends DirectoryMaker{
     ReferenceList m_groups;
     ReferenceList m_calendar;
 
-    public User(Path parentPath, String name) {
+    public User(Path parentPath, List<String> data) {
         m_filepath = parentPath.resolve( "users" );
         m_filepath = m_filepath.resolve( getNextID() );
         System.out.println( "Path: " + m_filepath );
@@ -35,7 +37,7 @@ public class User extends DirectoryMaker{
         m_password = new StringFile( "", m_filepath.resolve( "password" ) );
         m_isadmin = new BooleanFile(false, m_filepath.resolve( "isadmin"));
         m_groups = new ReferenceList(m_filepath.resolve( "groups" ) );
-        Calendar m_Cal = new Calendar(parentPath, name + "Calendar", name);
-        m_calendar = new ReferenceList( name + "Calendar", m_filepath.resolve( "calendar" ) );
+        Calendar m_Cal = new Calendar(parentPath, Arrays.asList(data.get(0)+"Calendar",data.get(1)));
+        m_calendar = new ReferenceList( data.get(1) + "Calendar", m_filepath.resolve( "calendar" ) );
     }
 }

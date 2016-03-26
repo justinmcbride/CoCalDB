@@ -8,6 +8,7 @@ import main.Entities.StringFile;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Created by Warren on 3/23/2016.
@@ -32,18 +33,18 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
     private StringFile m_date;
     private StringFile m_category;
 
-    public Event( Path parentPath ) {
+    public Event(Path parentPath, List<String> data) {
         Path path_events = parentPath.resolve( "events" );
         m_filepath = path_events.resolve( getNextID().toString() );
         CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
 
-        m_title = new StringFile( "titleTEST", m_filepath.resolve( "title" ) );
-        m_cost = new FloatFile( 0.0f, m_filepath.resolve( "cost" ) );
-        m_location = new StringFile( "locationTEST", m_filepath.resolve( "location" ) );
-        m_description = new StringFile( "descTEST", m_filepath.resolve( "description" ) );
-        m_date = new StringFile( "dateTEST", m_filepath.resolve( "date" ) );
-        m_category = new StringFile( "categoryTEST", m_filepath.resolve( "category" ) );
+        m_title = new StringFile( data.get(0), m_filepath.resolve( "title" ) );
+        m_cost = new FloatFile( data.get(1), m_filepath.resolve( "cost" ) );
+        m_location = new StringFile( data.get(2), m_filepath.resolve( "location" ) );
+        m_description = new StringFile( data.get(3), m_filepath.resolve( "description" ) );
+        m_date = new StringFile( data.get(4), m_filepath.resolve( "date" ) );
+        m_category = new StringFile( data.get(5), m_filepath.resolve( "category" ) );
 
     }
     static boolean initalize(){
