@@ -37,11 +37,11 @@ public class dbResolverThrd extends dbThrd {
 
     private void editDocument(String col){
         String attr = m_edit.getKey();
-        Path editPath = m_root_path.resolve(col).resolve(attr);
+        Path editPath = m_root_path.resolve(col).resolve(m_dID).resolve(attr);
         //lock
         switch (attr){
             case "cost" :  new FloatFile(m_edit.getVal(), editPath); break;
-            case "isadmin":    new BooleanFile(m_edit.getVal(), editPath); break;
+            case "isadmin": new BooleanFile(m_edit.getVal(), editPath); break;
             default :  new StringFile(m_edit.getVal(), editPath); break;
         }
         //unlock
@@ -58,7 +58,7 @@ public class dbResolverThrd extends dbThrd {
         //unlock
     }
     private void readDocument(String col){   // this needs to be much more verbose
-        Path editPath = m_root_path.resolve(col);
+        Path editPath = m_root_path.resolve(m_dID).resolve(col);
         Json ret;
         //lock???
         ///*IMPLEMENT WHEN NOT TIRED>!@>/ or when at Balmer peak*//
