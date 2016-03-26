@@ -71,27 +71,30 @@ public class dbResolverThrd extends dbThrd {
                 switch(m_col){
                     case CALENDAR:{
                         //lock
-                        System.out.println("path = " + m_root_path + m_data);
-                        new Calendar(m_root_path, m_data); break;
+                        new Calendar(m_root_path, m_data);
                         //unlock...........
+                        break;
                     }
                     case EVENT: {
                         //lock
-                        new Event(m_root_path, m_data); break;
+                        new Event(m_root_path, m_data);
                         //unlock...........
+                        break;
                     }
                     case GROUP: {
                         //lock
-                        new Group(m_root_path, m_data); break;
+                        new Group(m_root_path, m_data);
                         //unlock...........
+                        break;
                     }
                     case USER: {
                         //lock
-                        new User(m_root_path, m_data); break;
+                        new User(m_root_path, m_data);
                         //unlock...........
+                        break;
                     }
                 }
-            }
+            } break;
             case EDIT: {
                 switch (m_col){
                     case CALENDAR:{
@@ -107,7 +110,7 @@ public class dbResolverThrd extends dbThrd {
                         this.editDocument("users"); break;
                     }
                 }
-            }
+            } break;
             case READ: {
                 switch (m_col) {
                     case CALENDAR: {
@@ -123,7 +126,7 @@ public class dbResolverThrd extends dbThrd {
                         this.readDocument("users"); break;
                     }
                 }
-            }
+            } break;
             case DELETE: {
                 switch (m_col) {
                     case CALENDAR: {
@@ -139,7 +142,7 @@ public class dbResolverThrd extends dbThrd {
                         this.deleteDocument("users"); break;
                     }
                 }
-            }
+            } break;
         }
     }
 
