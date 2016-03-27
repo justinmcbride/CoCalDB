@@ -39,8 +39,8 @@ public class testDriver1 {
 
 
 //
-        Database DB = new Database(pDB);
-        DB.Initialize();
+        Database DB = Database.GetDB();
+        DB.Initialize(pDB);
 //        int i = 0;
 //        ArrayList<dbResolverThrd> threads = new ArrayList<>();
 //        threads.add(new dbResolverThrd(i, dbThrd.Operation.CREATE, dbThrd.Collection.CALENDAR, Arrays.asList("Cal0","justin")));

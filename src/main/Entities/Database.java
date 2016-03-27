@@ -3,6 +3,8 @@ package main.Entities;
 import main.*;
 import main.Structures.*;
 import org.eclipse.jetty.server.Server;
+
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -14,15 +16,18 @@ import java.util.ArrayList;
  * Defines the singleton instance for controlling access to the CoCal database
  */
 public class Database {
+    public static Database GetDB() {
+        if( s_Database == null ) {
+            s_Database = new Database();
+        }
+        return s_Database;
+    }
+
+    static Database s_Database = null;
+
     private Path m_root_path;
     private boolean m_initialized;
     Server m_server;
-
-
-//    private Map<id, Calendar> m_collection_calendars;
-//    private Map<id, User> m_collection_users;
-//    private Map<id, Event> m_collection_events;
-//    private Map<id, Group> m_collection_groups;
 
     LazyList<Group> m_collection_groups;
     LazyList<Event> m_collection_events;
@@ -45,15 +50,15 @@ public class Database {
         return m_collection_events.Add( event );
     }
 
+    private Database() {
 
-
-    public Database(Path rootLocation) {
-        m_root_path = rootLocation;
-        dbThrd.m_root_path = m_root_path;
         m_initialized = false;
     }
 
-    public boolean Initialize() {
+    public boolean Initialize( Path rootLocation ) {
+        m_root_path = rootLocation;
+        dbThrd.m_root_path = m_root_path;
+
         if( Files.notExists( m_root_path ) ) {
             if( CreateRoot() ) m_initialized = true;
         }
