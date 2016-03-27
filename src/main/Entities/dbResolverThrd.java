@@ -4,7 +4,6 @@ package main.Entities;
 import main.Structures.MicroMap;
 import main.*;
 
-import javax.json.Json;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -59,7 +58,7 @@ public class dbResolverThrd extends dbThrd {
     }
     private void readDocument(String col){   // this needs to be much more verbose
         Path editPath = m_root_path.resolve(m_dID).resolve(col);
-        Json ret;
+//        Json ret;
         //lock???
         ///*IMPLEMENT WHEN NOT TIRED>!@>/ or when at Balmer peak*//
         //unlock

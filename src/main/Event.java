@@ -7,13 +7,17 @@ import main.Entities.StringFile;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Created by Warren on 3/23/2016.
  * Defines the Event class for CoCal
  */
+@javax.ws.rs.Path( "event" )
 public class Event /* implements Commitable */ extends DirectoryMaker {
     // a unique id for each event to have
     static Integer __id = 0;
@@ -23,7 +27,13 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         return s;
     }
 
-    private Path m_filepath; // the path to this specific event's directory
+    @GET
+    @Produces( MediaType.TEXT_PLAIN )
+    public String getIT() {
+        return "wow no way";
+    }
+
+    private java.nio.file.Path m_filepath; // the path to this specific event's directory
 
     // the following are all attributes of the event
     private StringFile m_title;
@@ -33,8 +43,8 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
     private StringFile m_date;
     private StringFile m_category;
 
-    public Event(Path parentPath, List<String> data) {
-        Path path_events = parentPath.resolve( "events" );
+    public Event(java.nio.file.Path parentPath, List<String> data) {
+        java.nio.file.Path path_events = parentPath.resolve( "events" );
         m_filepath = path_events.resolve( getNextID().toString() );
         CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
