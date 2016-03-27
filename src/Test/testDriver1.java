@@ -39,12 +39,12 @@ public class testDriver1 {
 //
         Database DB = new Database(pDB);
         DB.Initialize();
-        int i = 0;
-        ArrayList<dbResolverThrd> threads = new ArrayList<>();
-        threads.add(new dbResolverThrd(i, dbThrd.Operation.CREATE, dbThrd.Collection.CALENDAR, Arrays.asList("Cal0","justin")));
-        threads.get(i).start();
-        try {threads.get(i).join();}
-        catch (InterruptedException e) {}
+//        int i = 0;
+//        ArrayList<dbResolverThrd> threads = new ArrayList<>();
+//        threads.add(new dbResolverThrd(i, dbThrd.Operation.CREATE, dbThrd.Collection.CALENDAR, Arrays.asList("Cal0","justin")));
+//        threads.get(i).start();
+//        try {threads.get(i).join();}
+//        catch (InterruptedException e) {}
 
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );

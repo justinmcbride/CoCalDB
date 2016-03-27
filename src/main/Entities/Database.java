@@ -1,13 +1,10 @@
 package main.Entities;
 
-import main.*;
-
+import org.eclipse.jetty.server.Server;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Calendar;
-import java.util.Map;
 
 /**
  * Created by justinmcbride on 3/23/16.
@@ -16,6 +13,8 @@ import java.util.Map;
 public class Database {
     private Path m_root_path;
     private boolean m_initialized;
+    Server m_server;
+
 
 //    private Map<id, Calendar> m_collection_calendars;
 //    private Map<id, User> m_collection_users;
@@ -34,6 +33,15 @@ public class Database {
         }
         else {
             // traverse and create db in memory
+        }
+        m_server = new Server(3000);
+        m_server.setHandler(new dbHandlerThrd());
+        try {
+            m_server.start();
+            m_server.join();
+        }
+        catch (Exception e){
+            System.out.println("Error starting server:" + e);
         }
         return m_initialized;
     }
