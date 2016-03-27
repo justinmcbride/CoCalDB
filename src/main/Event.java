@@ -9,15 +9,12 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 /**
  * Created by Warren on 3/23/2016.
  * Defines the Event class for CoCal
  */
-@javax.ws.rs.Path( "event" )
+
 public class Event /* implements Commitable */ extends DirectoryMaker {
     // a unique id for each event to have
     static Integer __id = 0;
@@ -27,8 +24,6 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         return s;
     }
 
-    @GET
-    @Produces( MediaType.TEXT_PLAIN )
     public String getIT() {
         return "wow no way";
     }
