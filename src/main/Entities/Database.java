@@ -1,10 +1,13 @@
 package main.Entities;
 
+import main.*;
+import main.Structures.*;
 import org.eclipse.jetty.server.Server;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 /**
  * Created by justinmcbride on 3/23/16.
@@ -21,6 +24,29 @@ public class Database {
 //    private Map<id, Event> m_collection_events;
 //    private Map<id, Group> m_collection_groups;
 
+    LazyList<Group> m_collection_groups;
+    LazyList<Event> m_collection_events;
+    LazyList<User> m_collection_users;
+    LazyList<Calendar> m_collection_calendars;
+
+    public boolean AddGroup( Group group ) {
+        return m_collection_groups.Add( group );
+    }
+
+    public boolean AddUser( User user ) {
+        return m_collection_users.Add( user );
+    }
+
+    public boolean AddCalendar( Calendar calendar ) {
+        return m_collection_calendars.Add( calendar );
+    }
+
+    public boolean AddEvent( Event event ) {
+        return m_collection_events.Add( event );
+    }
+
+
+
     public Database(Path rootLocation) {
         m_root_path = rootLocation;
         dbThrd.m_root_path = m_root_path;
@@ -34,6 +60,12 @@ public class Database {
         else {
             // traverse and create db in memory
         }
+
+        m_collection_groups = new LazyList<>();
+        m_collection_events = new LazyList<>();
+        m_collection_users = new LazyList<>();
+        m_collection_calendars = new LazyList<>();
+
         m_server = new Server(3000);
         m_server.setHandler(new dbHandlerThrd());
         try {

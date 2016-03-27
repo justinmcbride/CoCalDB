@@ -37,7 +37,7 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
         }
     }
 
-    LazyList() {
+    public LazyList() {
         super();
         m_head = new LazyListNode(false);
         m_tail = new LazyListNode(false);
