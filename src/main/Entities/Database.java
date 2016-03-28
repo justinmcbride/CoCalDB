@@ -29,10 +29,10 @@ public class Database {
     private boolean m_initialized;
     Server m_server;
 
-    LazyList<Group> m_collection_groups;
-    LazyList<Event> m_collection_events;
-    LazyList<User> m_collection_users;
-    LazyList<Calendar> m_collection_calendars;
+    public LazyList<Group> m_collection_groups;
+    public LazyList<Event> m_collection_events;
+    public LazyList<User> m_collection_users;
+    public LazyList<Calendar> m_collection_calendars;
 
     public boolean AddGroup( Group group ) {
         return m_collection_groups.Add( group );
@@ -73,13 +73,13 @@ public class Database {
 
         m_server = new Server(3000);
         m_server.setHandler(new dbHandlerThrd());
-        try {
-            m_server.start();
-            m_server.join();
-        }
-        catch (Exception e){
-            System.out.println("Error starting server:" + e);
-        }
+//        try {
+//            m_server.start();
+//            m_server.join();
+//        }
+//        catch (Exception e){
+//            System.out.println("Error starting server:" + e);
+//        }
         return m_initialized;
     }
 

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 public abstract class dbThrd extends Thread {
     public static Path m_root_path;
     int m_threadID;
+    static Database db = Database.GetDB();
     public enum Operation {
         CREATE, EDIT, READ, DELETE
     }
