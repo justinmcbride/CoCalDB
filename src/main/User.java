@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class User extends DirectoryMaker{
     static AtomicInteger __id  = new AtomicInteger();
     static String getNextID() {
-        String s = __id.toString();
-        __id.incrementAndGet();
+        Integer id = __id.getAndIncrement();
+        String s = id.toString();
         return s;
     }
 

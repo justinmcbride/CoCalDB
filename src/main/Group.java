@@ -16,8 +16,8 @@ public class Group extends DirectoryMaker {
     // a unique id for group event to have
     static AtomicInteger __id  = new AtomicInteger();
     static String getNextID() {
-        String s = __id.toString();
-        __id.incrementAndGet();
+        Integer id = __id.getAndIncrement();
+        String s = id.toString();
         return s;
     }
 
