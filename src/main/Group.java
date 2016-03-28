@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Warren on 3/23/2016.
@@ -13,12 +14,13 @@ import java.util.List;
  */
 public class Group extends DirectoryMaker {
     // a unique id for group event to have
-    static Integer __id = 0;
+    static AtomicInteger __id  = new AtomicInteger();
     static String getNextID() {
         String s = __id.toString();
-        __id++;
+        __id.incrementAndGet();
         return s;
     }
+
 
     private Path m_filepath;
     private StringFile m_name;
