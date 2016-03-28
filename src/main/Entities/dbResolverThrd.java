@@ -43,6 +43,7 @@ public class dbResolverThrd extends dbThrd {
             case "isadmin": new BooleanFile(m_edit.getVal(), editPath); break;
             default :  new StringFile(m_edit.getVal(), editPath); break;
         }
+        //Database.m_collection_groups.add(new Group(m_root_path, m_data));
         //unlock
     }
 
@@ -69,27 +70,19 @@ public class dbResolverThrd extends dbThrd {
             case CREATE:{
                 switch(m_col){
                     case CALENDAR:{
-                        //lock
-                        new Calendar(m_root_path, m_data);
-                        //unlock...........
+                        db.m_collection_calendars.Add(new Calendar(m_root_path, m_data));
                         break;
                     }
                     case EVENT: {
-                        //lock
-                        new Event(m_root_path, m_data);
-                        //unlock...........
+                        db.m_collection_events.Add(new Event(m_root_path, m_data));
                         break;
                     }
                     case GROUP: {
-                        //lock
-                        new Group(m_root_path, m_data);
-                        //unlock...........
+                        db.m_collection_groups.Add(new Group(m_root_path, m_data));
                         break;
                     }
                     case USER: {
-                        //lock
-                        new User(m_root_path, m_data);
-                        //unlock...........
+                        db.m_collection_users.Add(new User(m_root_path, m_data));
                         break;
                     }
                 }
