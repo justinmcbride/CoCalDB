@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,7 +18,8 @@ public abstract class DirectoryMaker {
     public ReentrantLock lock = new ReentrantLock(true);
     public int m_ID;
     protected java.nio.file.Path m_filepath;
-    protected List<File<?>> m_files;
+    protected List<File<?>> m_files = new ArrayList();
+    protected List<ReferenceList> m_references = new ArrayList() ;
 
     protected Integer m_id = null;
 
@@ -47,8 +49,9 @@ public abstract class DirectoryMaker {
             Iterator<MicroMap<String, String>> itr = edit.iterator();
             while (itr.hasNext()) {
                 MicroMap<String, String> change = itr.next();
-                Path path = m_filepath.resolve(change.getVal());
-                File.CommitChange(path, change.getKey());
+                String attribute = change.getKey();
+                Path path = m_filepath.resolve(attribute);
+                File.CommitChange(path, change.getVal());
             }
         }
         finally{
@@ -67,7 +70,6 @@ public abstract class DirectoryMaker {
     }
     public void delete(){
         deleteFolder(m_filepath.toFile());
-
     }
     public static void deleteFolder(java.io.File folder) {    // taken from http://stackoverflow.com/questions/7768071/how-to-delete-directory-content-in-java
         java.io.File[] files = folder.listFiles();
@@ -76,6 +78,7 @@ public abstract class DirectoryMaker {
                 if(f.isDirectory()) {
                     deleteFolder(f);
                 } else {
+                    System.out.println("deleting" + f.toString());
                     f.delete();
                 }
             }

@@ -1,6 +1,5 @@
 package Test;
 
-import main.*;
 import main.Entities.*;
 
 
@@ -23,20 +22,30 @@ public class testDriver1 {
 
         Database DB = Database.GetDB();
         DB.Initialize(pDB);
-//        int i = 0;
-//        int NUM_THREADS = 20;
-//        ArrayList<dbResolverThrd> threads = new ArrayList<>();
-//        for (i = 0; i < NUM_THREADS; ++i) {
-//            threads.add(new dbResolverThrd(i, dbThrd.Operation.CREATE, dbThrd.Collection.CALENDAR, Arrays.asList("Cal0", "justin")));
-//            threads.get(i).start();
-//        }
-//        for (i = 0; i < NUM_THREADS; ++i) {
-//            try {
-//                threads.get(i).join();
-//            } catch (InterruptedException e) {}
-//        }
-//        System.out.println(DB.m_collection_calendars);
+        int i = 0;
+        int NUM_THREADS = 10;
+        ArrayList<dbResolverThrd> threads = new ArrayList<>();
+        for (i = 0; i < NUM_THREADS; ++i) {
+            threads.add(new dbResolverThrd(i, dbThrd.Op.CREATE, dbThrd.Col.CALENDAR, Arrays.asList("Ca" + i, "justin")));
+            threads.get(i).start();
+        }
+        for (i = 0; i < NUM_THREADS; ++i) {
+            try {
+                threads.get(i).join();
+            } catch (InterruptedException e) {}
+        }
+        threads.clear();
+        System.out.println(DB.m_collection_calendars);
+        for (i = 0; i < NUM_THREADS; ++i) {
 
+            threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
+            threads.get(i).start();
+        }
+        for (i = 0; i < NUM_THREADS; ++i) {
+            try {
+                threads.get(i).join();
+            } catch (InterruptedException e) {}
+        }
 
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );

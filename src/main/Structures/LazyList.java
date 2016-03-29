@@ -14,12 +14,12 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
 
     //private ReentrantLock m_lock;
 
-    class LazyListNode<V extends DirectoryMaker> extends ListNode<V> {
+    class LazyListNode<T extends DirectoryMaker> extends Node<T> {
         LazyListNode next = null;
         private ReentrantLock m_lock;
         AtomicMarkableReference<LazyListNode> m_marked;
 
-        LazyListNode( V val ) {
+        LazyListNode( T val ) {
             super( val );
             m_lock = new ReentrantLock();
             m_marked = new AtomicMarkableReference<>(this, false);
@@ -49,7 +49,6 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
         return !pred.m_marked.isMarked() && !curr.m_marked.isMarked() && (pred.next == curr);
     }
 
-    @Override
     public boolean Add(T newValue) {
         if (newValue == null) {return false;}
         LazyListNode<T> newNode = new LazyListNode<>( newValue );
@@ -79,13 +78,13 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
         return m_tail == m_head;
     }
 
-    public <T extends DirectoryMaker> T Remove(T valueToRemove) {
-        if (valueToRemove == null) { return null; }
-        LazyListNode curr = m_head;
-        LazyListNode pred = null;
-        while(curr.value != valueToRemove) {
+    public <T extends DirectoryMaker> T Remove(int dID) {
+        LazyListNode curr = m_head.next;
+        if (curr == m_tail) { return null; }
+        LazyListNode pred = m_head;
+        while(curr.value.m_ID != dID) {
             pred = curr;
-            if(curr != null) {
+            if(curr.next != m_tail) {
                 curr = curr.next;
             }
             else { return null; }
@@ -100,7 +99,7 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
                 return (T) curr.value;
             } else {
                 Thread.yield();
-                return Remove(valueToRemove);
+                return Remove(dID);
             }
         }
         finally {
@@ -124,6 +123,28 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
     }
 
     @Override
+    public String toString(){
+        LazyListNode curr = m_head.next;
+        String ret = "Calendar len " + m_listsize + ": ";
+        while(curr != null){
+            if ( curr.getVal() != null) ret = ret + curr.getVal().m_ID + ", ";
+            curr = curr.next;
+        }
+        return ret;
+    }
+
+    @Override
+    public <T extends DirectoryMaker> T get(int ID) {
+        LazyListNode curr = m_head.next;
+        while (curr.value.m_ID != ID) {
+            if (curr != null) {
+                curr = curr.next;
+            } else {
+                return null;
+            }
+        }
+        return (T) curr.getVal();
+    }
     public boolean Contains(T value) {
         return false;
     }

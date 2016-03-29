@@ -111,8 +111,8 @@ public class Database {
 
         }
 
-        m_server = new Server(3000);
-        m_server.setHandler(new dbHandlerThrd());
+//        m_server = new Server(3000);
+//        m_server.setHandler(new dbHandlerThrd());
 //        try {
 //            m_server.start();
 //            m_server.join();

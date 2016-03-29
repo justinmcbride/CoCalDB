@@ -4,11 +4,7 @@ package main.Entities;
 import main.Structures.MicroMap;
 import main.*;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
-
-import static java.nio.file.Files.delete;
 
 /**
  *  Takes parsed requests and performs the required db operations
@@ -20,34 +16,23 @@ public class dbResolverThrd extends dbThrd {
 
 
     // constructor for event creation
-    public dbResolverThrd(int tID, Operation op, Collection col, List<String> data){
+    public dbResolverThrd(int tID, Op op, Col col, List<String> data){
         super(tID,op,col);
         m_data = data;
     }
     // constructor for editing a document attribute
-    public dbResolverThrd(int tID, Operation op, Collection col, int dID , List<MicroMap<String, String>> edits){
+    public dbResolverThrd(int tID, Op op, Col col, int dID , List<MicroMap<String, String>> edits){
         this(tID,op,col,dID);
         m_edits = edits;
     }
     // constructor for reading/deleting a document
-    public dbResolverThrd(int tID, Operation op, Collection col, int dID){
+    public dbResolverThrd(int tID, Op op, Col col, int dID){
         super(tID,op,col);
+        m_dID = dID;
     }
 
-    //each event must have a lock so it would be fine to do edit events in bulk
-    private <T extends DirectoryMaker> void editDocument(T doc){
-        doc.edit(m_edits);
-    }
+    private void readDocument(String col){
 
-     private void deleteDocument(String col){   // this needs to be much more verbose
-    }
-    private void readDocument(String col){   // this needs to be much more verbose
-
-        //Path editPath = m_root_path.resolve(m_dID).resolve(col);
-//        Json ret;
-        //lock???
-        ///*IMPLEMENT WHEN NOT TIRED>!@>/ or when at Balmer peak*//
-        //unlock
     }
 
     public void run(){
@@ -103,20 +88,17 @@ public class dbResolverThrd extends dbThrd {
             case DELETE: {
                 switch (m_col) {
                     case CALENDAR: {
-                        Calendar toRemove = (Calendar) db.m_collection_calendars.get(m_dID);
-                        db.m_collection_calendars.Remove(toRemove); break;
+                        System.out.println("remove calendar " + m_dID);
+                        db.m_collection_calendars.Remove(m_dID).delete(); break;
                     }
                     case EVENT: {
-                        Event toRemove = (Event) db.m_collection_events.get(m_dID);
-                        db.m_collection_events.Remove(toRemove); break;
+                        db.m_collection_events.Remove(m_dID).delete(); break;
                     }
                     case GROUP: {
-                        Group toRemove = (Group) db.m_collection_groups.get(m_dID);
-                        db.m_collection_groups.Remove(toRemove); break;
+                        db.m_collection_groups.Remove(m_dID).delete(); break;
                     }
                     case USER: {
-                        User toRemove = (User) db.m_collection_users.get(m_dID);
-                        db.m_collection_users.Remove(toRemove); break;
+                        db.m_collection_users.Remove(m_dID).delete(); break;
                     }
                 }
             } break;

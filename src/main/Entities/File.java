@@ -20,7 +20,7 @@ public abstract class File<T> {
     {
         m_value = value;
         m_fileLocation = myPath;
-        System.out.println( "File: " + myPath );
+        //System.out.println( "File: " + myPath );
         if( !exists ) CommitChange();
         else {
 

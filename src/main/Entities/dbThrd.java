@@ -9,15 +9,15 @@ public abstract class dbThrd extends Thread {
     public static Path m_root_path;
     int m_threadID;
     static Database db = Database.GetDB();
-    public enum Operation {
+    public enum Op {
         CREATE, EDIT, READ, DELETE
     }
-    Operation m_op;
+    Op m_op;
 
-    public enum Collection {
+    public enum Col {
         CALENDAR, EVENT, GROUP, USER
     }
-    Collection m_col;
+    Col m_col;
 
 //    protected enum Document {
 //        title, cost, location, description, date,
@@ -35,15 +35,15 @@ public abstract class dbThrd extends Thread {
     protected dbThrd(int ID) {
         m_threadID = ID;
     }
-    protected dbThrd(int ID, Operation op){
+    protected dbThrd(int ID, Op op){
        this(ID);
        m_op = op;
     }
-    protected dbThrd(int ID, Operation op, Collection col){
+    protected dbThrd(int ID, Op op, Col col){
         this(ID,op);
         m_col = col;
     }
-//    protected dbThrd(int ID, Operation op, Collection col, Document doc){
+//    protected dbThrd(int ID, Op op, Col col, Document doc){
 //        this(ID,op,col);
 //        m_doc = doc;
 //    }

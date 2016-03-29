@@ -5,25 +5,24 @@ import main.Entities.DirectoryMaker;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
-    public class ListNode<T extends DirectoryMaker> {
+    public class Node<T extends DirectoryMaker> {
         public T value;
-        public ListNode next;
+        public Node next = null;
 
-        public ListNode( T value ) {
+        public Node(T value ) {
             this.value = value;
-            next = null;
         }
         public T getVal(){
             return value;
         }
     }
 
-    protected ListNode m_head;
-    protected ListNode m_tail;
+    protected Node m_head = null;
+    protected Node m_tail = null;
     public AtomicInteger m_listsize = new AtomicInteger();
 
     public <T extends DirectoryMaker> T get(int ID) {
-        ListNode curr = m_head;
+        Node curr = m_head.next;
         while (curr.value.m_ID != ID) {
             if (curr != null) {
                 curr = curr.next;
@@ -40,7 +39,7 @@ public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
     }
 
     public abstract boolean Add( T newValue );
-    public abstract <T extends DirectoryMaker> T Remove( T valueToRemove );
+    public abstract <T extends DirectoryMaker> T Remove( int dID );
     public abstract boolean Contains( T newValue );
     public abstract T Get( int id );
     public boolean IsEmpty() {
