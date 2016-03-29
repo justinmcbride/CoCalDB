@@ -4,10 +4,15 @@ import main.Entities.DirectoryMaker;
 import main.Entities.FloatFile;
 import main.Entities.ReferenceList;
 import main.Entities.StringFile;
+import main.Structures.MicroMap;
 
+import javax.swing.text.html.HTMLDocument;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -19,9 +24,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Event /* implements Commitable */ extends DirectoryMaker {
     // a unique id for each event to have
     static AtomicInteger __id  = new AtomicInteger();
-    static String getNextID() {
+    String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
+        m_ID = id.intValue();
         return s;
     }
 
@@ -29,7 +35,6 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         return "wow no way";
     }
 
-    private java.nio.file.Path m_filepath; // the path to this specific event's directory
 
     // the following are all attributes of the event
     private StringFile m_title;
@@ -45,14 +50,19 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
 
-        m_title = new StringFile( data.get(0), m_filepath.resolve( "title" ) );
-        m_cost = new FloatFile( data.get(1), m_filepath.resolve( "cost" ) );
-        m_location = new StringFile( data.get(2), m_filepath.resolve( "location" ) );
-        m_description = new StringFile( data.get(3), m_filepath.resolve( "description" ) );
-        m_date = new StringFile( data.get(4), m_filepath.resolve( "date" ) );
-        m_category = new StringFile( data.get(5), m_filepath.resolve( "category" ) );
+        m_files.add( m_title = new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
+        m_files.add( m_cost = new FloatFile( data.get(1), m_filepath.resolve( "cost" ) ) );
+        m_files.add( m_location = new StringFile( data.get(2), m_filepath.resolve( "location" ) ) );
+        m_files.add( m_description = new StringFile( data.get(3), m_filepath.resolve( "description" ) ) );
+        m_files.add( m_date = new StringFile( data.get(4), m_filepath.resolve( "date" ) ) );
+        m_files.add( m_category = new StringFile( data.get(5), m_filepath.resolve( "category" ) ) );
 
     }
+
+    public void refresh(){
+
+    }
+
     static boolean initalize(){
         File folder = new File("your/path");
         return true;

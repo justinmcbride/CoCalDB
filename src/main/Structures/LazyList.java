@@ -1,9 +1,11 @@
 package main.Structures;
 
+import main.Entities.DirectoryMaker;
+
 import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class LazyList<T> extends AbstractConcurrentList<T> {
+public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T> {
 
     private LazyListNode m_head;
     private LazyListNode m_tail;
@@ -11,21 +13,18 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
 
     //private ReentrantLock m_lock;
 
-    class LazyListNode<T> extends ListNode<T> {
+    class LazyListNode<V extends DirectoryMaker> extends ListNode<V> {
         LazyListNode next = null;
         private ReentrantLock m_lock;
         AtomicMarkableReference<LazyListNode> m_marked;
 
-
-        LazyListNode( T val ) {
+        LazyListNode( V val ) {
             super( val );
             m_lock = new ReentrantLock();
             m_marked = new AtomicMarkableReference<>(this, false);
         }
         LazyListNode(boolean init){
-            super(null);
-            m_lock = new ReentrantLock();
-            m_marked = new AtomicMarkableReference<>(this, init);
+            this(null);
         }
 
         public void lock() {
@@ -61,6 +60,7 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
                 pred.next = newNode;
                 m_tail_pred = newNode;
                 newNode.next = m_tail;
+                m_listsize.incrementAndGet();
                 return true;
             } else {
                 Thread.yield();
@@ -78,9 +78,8 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
         return m_tail == m_head;
     }
 
-    @Override
-    public boolean Remove(T valueToRemove) {
-        if (valueToRemove == null) { return false; }
+    public <T extends DirectoryMaker> T Remove(T valueToRemove) {
+        if (valueToRemove == null) { return null; }
         LazyListNode curr = m_head;
         LazyListNode pred = null;
         while(curr.value != valueToRemove) {
@@ -88,7 +87,7 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
             if(curr != null) {
                 curr = curr.next;
             }
-            else { return false; }
+            else { return null; }
         }
         try {
             pred.lock();
@@ -96,7 +95,8 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
             if (Validate(pred, curr)) {
                 curr.m_marked.set(curr, true);
                 pred.next = curr.next;
-                return true;
+                m_listsize.decrementAndGet();
+                return (T) curr.value;
             } else {
                 Thread.yield();
                 return Remove(valueToRemove);
@@ -110,7 +110,14 @@ public class LazyList<T> extends AbstractConcurrentList<T> {
     }
 
     @Override
-    public boolean Contains(T newValue) {
+    public boolean Contains(T value) {
         return false;
     }
+
+
+
+
+    public boolean Edit(T value){
+        return false;
+        }
 }

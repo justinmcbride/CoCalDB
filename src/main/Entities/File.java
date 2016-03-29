@@ -39,6 +39,18 @@ public abstract class File<T> {
         }
     }
 
+    static public void CommitChange(Path fileLocation, String toWrite){
+        try( BufferedWriter writer = Files.newBufferedWriter(fileLocation) ) {
+            writer.write( toWrite);
+        }
+        catch (Exception e) {
+            System.out.println( "error: " + e);
+            e.printStackTrace();
+        }
+        finally {
+        }
+    }
+
     public void Refresh() {
         try(BufferedReader reader = Files.newBufferedReader(m_fileLocation) ) {
             String line = null;

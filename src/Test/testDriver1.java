@@ -20,25 +20,7 @@ public class testDriver1 {
         //Path pDB = Paths.get(System.getProperty("user.home"));
         Path pDB  = Paths.get(System.getProperty("user.dir")).resolve("testDB");
         System.out.println( "WorkDir: " + pDB.toString() );
-//        idFile blahFile = new idFile( 17,Paths.get(System.getProperty("user.home"), "test.txt") );
-//        blahFile.SetValue( 15, true );
 
-//        System.out.println( "------------------------------------------" );
-//        new Event( pDB );
-////        new Event( pDB );
-////        new Event( pDB );
-//        //new Event( pDB );
-//
-//        System.out.println( "------------------------------------------" );
-//        ArrayList<String> members = new ArrayList<>();
-//        members.add( "justin" );
-//        members.add( "warren" );
-//        new Group( pDB, "devTeam", members );
-//        User justin = new User(pDB, "justin");
-//        Calendar bobCal = new Calendar(pDB, "bobCal", "justin");
-
-
-//
         Database DB = Database.GetDB();
         DB.Initialize(pDB);
         int i = 0;
@@ -54,6 +36,7 @@ public class testDriver1 {
             } catch (InterruptedException e) {}
         }
         System.out.println(DB.m_collection_calendars);
+
 
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );

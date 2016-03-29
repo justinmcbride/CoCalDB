@@ -14,9 +14,9 @@ import static java.nio.file.Files.delete;
  *  Takes parsed requests and performs the required db operations
  */
 public class dbResolverThrd extends dbThrd {
-    MicroMap<String, String> m_edit;
+    List<MicroMap<String, String>> m_edits;
     List<String> m_data;
-    String m_dID; // document ID
+    int m_dID; // document ID
 
 
     // constructor for event creation
@@ -25,40 +25,25 @@ public class dbResolverThrd extends dbThrd {
         m_data = data;
     }
     // constructor for editing a document attribute
-    public dbResolverThrd(int tID, Operation op, Collection col, String dID, MicroMap<String, String> edit){
+    public dbResolverThrd(int tID, Operation op, Collection col, int dID , List<MicroMap<String, String>> edits){
         this(tID,op,col,dID);
-        m_edit = edit;
+        m_edits = edits;
     }
     // constructor for reading/deleting a document
-    public dbResolverThrd(int tID, Operation op, Collection col, String dID){
+    public dbResolverThrd(int tID, Operation op, Collection col, int dID){
         super(tID,op,col);
     }
 
-    private void editDocument(String col){
-        String attr = m_edit.getKey();
-        Path editPath = m_root_path.resolve(col).resolve(m_dID).resolve(attr);
-        //lock
-        switch (attr){
-            case "cost" :  new FloatFile(m_edit.getVal(), editPath); break;
-            case "isadmin": new BooleanFile(m_edit.getVal(), editPath); break;
-            default :  new StringFile(m_edit.getVal(), editPath); break;
-        }
-        //Database.m_collection_groups.add(new Group(m_root_path, m_data));
-        //unlock
+    //each event must have a lock so it would be fine to do edit events in bulk
+    private <T extends DirectoryMaker> void editDocument(T doc){
+        doc.edit(m_edits);
     }
 
-    private void deleteDocument(String col){   // this needs to be much more verbose
-        Path editPath = m_root_path.resolve(col);
-        //lock
-        try {delete(editPath);}
-        catch (IOException e)
-        {
-            System.out.println("Unable to delete " + editPath.toString());
-        }
-        //unlock
+     private void deleteDocument(String col){   // this needs to be much more verbose
     }
     private void readDocument(String col){   // this needs to be much more verbose
-        Path editPath = m_root_path.resolve(m_dID).resolve(col);
+
+        //Path editPath = m_root_path.resolve(m_dID).resolve(col);
 //        Json ret;
         //lock???
         ///*IMPLEMENT WHEN NOT TIRED>!@>/ or when at Balmer peak*//
@@ -70,36 +55,32 @@ public class dbResolverThrd extends dbThrd {
             case CREATE:{
                 switch(m_col){
                     case CALENDAR:{
-                        db.m_collection_calendars.Add(new Calendar(m_root_path, m_data));
-                        break;
+                        db.m_collection_calendars.Add(new Calendar(m_root_path, m_data)); break;
                     }
                     case EVENT: {
-                        db.m_collection_events.Add(new Event(m_root_path, m_data));
-                        break;
+                        db.m_collection_events.Add(new Event(m_root_path, m_data)); break;
                     }
                     case GROUP: {
-                        db.m_collection_groups.Add(new Group(m_root_path, m_data));
-                        break;
+                        db.m_collection_groups.Add(new Group(m_root_path, m_data)); break;
                     }
                     case USER: {
-                        db.m_collection_users.Add(new User(m_root_path, m_data));
-                        break;
+                        db.m_collection_users.Add(new User(m_root_path, m_data)); break;
                     }
                 }
             } break;
             case EDIT: {
                 switch (m_col){
                     case CALENDAR:{
-                        this.editDocument("calendars"); break;
+                        db.m_collection_calendars.get(m_dID).edit(m_edits); break;
                     }
-                    case EVENT:{
-                        this.editDocument("events"); break;
+                    case EVENT: {
+                        db.m_collection_events.get(m_dID).edit(m_edits); break;
                     }
-                    case GROUP:{
-                        this.editDocument("groups"); break;
+                    case GROUP: {
+                        db.m_collection_groups.get(m_dID).edit(m_edits); break;
                     }
-                    case USER:{
-                        this.editDocument("users"); break;
+                    case USER: {
+                        db.m_collection_users.get(m_dID).edit(m_edits); break;
                     }
                 }
             } break;
@@ -122,16 +103,20 @@ public class dbResolverThrd extends dbThrd {
             case DELETE: {
                 switch (m_col) {
                     case CALENDAR: {
-                        this.deleteDocument("calendars"); break;
+                        Calendar toRemove = (Calendar) db.m_collection_calendars.get(m_dID);
+                        db.m_collection_calendars.Remove(toRemove); break;
                     }
                     case EVENT: {
-                        this.deleteDocument("events"); break;
+                        Event toRemove = (Event) db.m_collection_events.get(m_dID);
+                        db.m_collection_events.Remove(toRemove); break;
                     }
                     case GROUP: {
-                        this.deleteDocument("groups"); break;
+                        Group toRemove = (Group) db.m_collection_groups.get(m_dID);
+                        db.m_collection_groups.Remove(toRemove); break;
                     }
                     case USER: {
-                        this.deleteDocument("users"); break;
+                        User toRemove = (User) db.m_collection_users.get(m_dID);
+                        db.m_collection_users.Remove(toRemove); break;
                     }
                 }
             } break;

@@ -14,14 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class User extends DirectoryMaker{
     static AtomicInteger __id  = new AtomicInteger();
-    static String getNextID() {
+    String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
+        m_ID = id.intValue();
         return s;
     }
 
-
-    private Path m_filepath;
     StringFile m_name;
     StringFile m_email;
     StringFile m_password;
@@ -31,15 +30,18 @@ public class User extends DirectoryMaker{
 
     public User(Path parentPath, List<String> data) {
         m_filepath = parentPath.resolve( "users" );
-        m_filepath = m_filepath.resolve( getNextID() );
+        m_filepath = m_filepath.resolve( getNextID().toString() );
         System.out.println( "Path: " + m_filepath );
         CreateDirectory( m_filepath );
-        m_name = new StringFile( "", m_filepath.resolve( "name" ) );
-        m_email = new StringFile( "", m_filepath.resolve( "email" ) );
-        m_password = new StringFile( "", m_filepath.resolve( "password" ) );
-        m_isadmin = new BooleanFile(false, m_filepath.resolve( "isadmin"));
-        m_groups = new ReferenceList(m_filepath.resolve( "groups" ) );
+        m_files.add( m_name = new StringFile( "", m_filepath.resolve( "name" ) ) );
+        m_files.add( m_email = new StringFile( "", m_filepath.resolve( "email" ) ) );
+        m_files.add( m_password = new StringFile( "", m_filepath.resolve( "password" ) ) );
+        m_files.add( m_isadmin = new BooleanFile(false, m_filepath.resolve( "isadmin") ) );
+        m_groups = new ReferenceList(m_filepath.resolve( "groups" ) ) ;
         Calendar m_Cal = new Calendar(parentPath, Arrays.asList(data.get(0)+"Calendar",data.get(1)));
-        m_calendar = new ReferenceList( data.get(1) + "Calendar", m_filepath.resolve( "calendar" ) );
+        m_calendar = new ReferenceList( data.get(1) + "Calendar", m_filepath.resolve( "calendar" ) ) ;
     }
+
+
 }
+
