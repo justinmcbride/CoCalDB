@@ -7,7 +7,6 @@ import java.text.ParseException;
  * Concrete class for File<Boolean>
  */
 public class BooleanFile extends File<Boolean> {
-
     public BooleanFile(Boolean value, Path myPath ) {
         super( value, myPath );
     }

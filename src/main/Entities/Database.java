@@ -3,13 +3,17 @@ package main.Entities;
 import main.*;
 import main.Structures.*;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.websocket.jsr356.decoders.IntegerDecoder;
+import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by justinmcbride on 3/23/16.
@@ -58,18 +62,54 @@ public class Database {
     public boolean Initialize( Path rootLocation ) {
         m_root_path = rootLocation;
         dbThrd.m_root_path = m_root_path;
-
-        if( Files.notExists( m_root_path ) ) {
-            if( CreateRoot() ) m_initialized = true;
-        }
-        else {
-            // traverse and create db in memory
-        }
-
         m_collection_groups = new LazyList<>();
         m_collection_events = new LazyList<>();
         m_collection_users = new LazyList<>();
         m_collection_calendars = new LazyList<>();
+
+        if( Files.notExists( m_root_path ) ) {
+            if( CreateRoot() ) m_initialized = true;
+            System.out.println( "Root location IS NEW" );
+        }
+        else {
+            System.out.println( "Root location exists" );
+            try {
+                DirectoryStream<Path> stream = Files.newDirectoryStream( m_root_path );
+                for( Path item : stream ) {
+                    // parse all the existing calendars
+                    if( item.getFileName().toString().equals( "calendars" ) ) {
+                        DirectoryStream<Path> stream_calendars = Files.newDirectoryStream( item );
+                        for( Path item_calendar : stream_calendars ) {
+                            int id = Integer.parseInt(item_calendar.getFileName().toString());
+                            System.out.println( "id = " + id );
+                            StringFile title = null;
+                            ReferenceList events = null;
+                            ReferenceList owner = null;
+                            DirectoryStream<Path> stream_calendar =  Files.newDirectoryStream( item_calendar );
+                            for( Path item_attribute : stream_calendar ) {
+                                if( item_attribute.getFileName().toString().equals( "title" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    title = new StringFile( lines.get(0), item_attribute, true );
+                                    System.out.println( "title: " + title.ReadValue() );
+                                }
+                                if( item_attribute.getFileName().toString().equals( "owners" ) ) {
+                                    owner = new ReferenceList( item_attribute, true );
+                                }
+                                if( item_attribute.getFileName().toString().equals( "events" ) ) {
+                                    events = new ReferenceList( item_attribute, true );
+                                }
+                            }
+                            m_collection_calendars.Add( new Calendar( item_calendar, title, events, owner ) );
+                        }
+                    }
+                }
+
+            }
+            catch( IOException e ) {
+                System.out.println( "Couldn't open " + e.getMessage() + ": " + e.getCause() );
+            }
+
+        }
 
         m_server = new Server(3000);
         m_server.setHandler(new dbHandlerThrd());

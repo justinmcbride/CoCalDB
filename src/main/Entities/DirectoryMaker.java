@@ -19,6 +19,12 @@ public abstract class DirectoryMaker {
     protected java.nio.file.Path m_filepath;
     protected List<File<?>> m_files;
 
+    protected Integer m_id = null;
+
+    public Integer GetID() {
+        return m_id;
+    }
+
     protected Boolean CreateDirectory( Path path )
     {
         try {

@@ -14,14 +14,21 @@ import java.text.ParseException;
  */
 public abstract class File<T> {
     Path m_fileLocation;
-    T m_value;
+    private T m_value;
 
-    public File( T value, Path myPath )
+    public File( T value, Path myPath, boolean exists )
     {
         m_value = value;
         m_fileLocation = myPath;
         System.out.println( "File: " + myPath );
-        CommitChange();
+        if( !exists ) CommitChange();
+        else {
+
+        }
+    }
+
+    public File( T value, Path myPath ) {
+        this( value, myPath, false );
     }
 
     public abstract T ConvertValue( String s ) throws ParseException;

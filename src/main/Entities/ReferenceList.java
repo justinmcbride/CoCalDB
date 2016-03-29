@@ -1,6 +1,7 @@
 package main.Entities;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -13,7 +14,21 @@ public class ReferenceList extends DirectoryMaker {
     private ArrayList<ReferenceFile> m_list;
     private Path m_path;
 
-    public ReferenceList(Path myPath ) {
+    public ReferenceList( Path myPath, boolean exists ) {
+        m_path = myPath;
+        m_list = new ArrayList<>();
+        try {
+            DirectoryStream<Path> stream = Files.newDirectoryStream( m_path );
+            for( Path item : stream ) {
+                m_list.add( new ReferenceFile( item, true ) );
+            }
+        }
+        catch( IOException e ) {
+            System.out.println( "Error creating reference file: " + e );
+        }
+    }
+
+    public ReferenceList( Path myPath ) {
         m_path = myPath;
         m_list = new ArrayList<>();
         CreateDirectory( m_path );

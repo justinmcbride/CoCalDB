@@ -42,6 +42,7 @@ public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
     public abstract boolean Add( T newValue );
     public abstract <T extends DirectoryMaker> T Remove( T valueToRemove );
     public abstract boolean Contains( T newValue );
+    public abstract T Get( int id );
     public boolean IsEmpty() {
         return m_head == null;
     }

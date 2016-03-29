@@ -2,6 +2,7 @@ package main.Structures;
 
 import main.Entities.DirectoryMaker;
 
+import java.nio.file.DirectoryStream;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -106,7 +107,20 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
             pred.unlock();
             curr.unlock();
         }
+    }
 
+    @Override
+    public T Get(int id ) {
+        LazyListNode curr = m_head;
+        LazyListNode pred = null;
+        while(curr.value.GetID() != id) {
+            pred = curr;
+            if(curr != null) {
+                curr = curr.next;
+            }
+            else { return null; }
+        }
+        return null;
     }
 
     @Override

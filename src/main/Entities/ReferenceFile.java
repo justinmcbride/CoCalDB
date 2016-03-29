@@ -15,4 +15,8 @@ public class ReferenceFile extends File<String> {
     ReferenceFile( Path myPath ) {
         super( "", myPath );
     }
+
+    ReferenceFile( Path myPath, boolean exists ) {
+        super( "",  myPath, true );
+    }
 }

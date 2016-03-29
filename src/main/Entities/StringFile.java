@@ -14,6 +14,10 @@ public class StringFile extends File<String> {
         super( value, myPath );
     }
 
+    public StringFile( String value, Path myPath, boolean exists ) {
+        super( value, myPath, exists );
+    }
+
     public String ConvertValue(String s) throws ParseException {
 //        throw new ParseException( "hello", 2 );
         return s;

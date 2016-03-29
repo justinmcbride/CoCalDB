@@ -22,6 +22,7 @@ public class Group extends DirectoryMaker {
         return s;
     }
 
+    private Path m_filepath;
     private StringFile m_name;
     private ReferenceList m_members;
     private ReferenceList m_calendar;
@@ -39,6 +40,10 @@ public class Group extends DirectoryMaker {
     public Group(Path parentPath, List<String> data, ArrayList<String> members_list ) {
         this(parentPath, data);
         m_members = new ReferenceList( members_list, m_filepath.resolve( "members" ) );
+    }
+
+    public Integer GetID() {
+        return 0;
     }
 
 }

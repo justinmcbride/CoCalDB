@@ -25,6 +25,13 @@ public class Calendar extends DirectoryMaker{
     private ReferenceList m_owner;
     private ReferenceList m_events;
 
+    public Calendar(Path myPath, StringFile title, ReferenceList owner, ReferenceList events ) {
+        m_filepath = myPath;
+        m_name = title;
+        m_owner = owner;
+        m_events = events;
+    }
+
 
     public Calendar(Path parentPath , List<String> data) {
         Path path_events = parentPath.resolve( "calendars" );
