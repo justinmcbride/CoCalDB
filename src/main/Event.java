@@ -50,12 +50,12 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
         CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
 
-        m_files.add( m_title = new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
-        m_files.add( m_cost = new FloatFile( data.get(1), m_filepath.resolve( "cost" ) ) );
-        m_files.add( m_location = new StringFile( data.get(2), m_filepath.resolve( "location" ) ) );
-        m_files.add( m_description = new StringFile( data.get(3), m_filepath.resolve( "description" ) ) );
-        m_files.add( m_date = new StringFile( data.get(4), m_filepath.resolve( "date" ) ) );
-        m_files.add( m_category = new StringFile( data.get(5), m_filepath.resolve( "category" ) ) );
+        m_attributes.put ("title", new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
+        m_attributes.put ("cost",  new FloatFile( data.get(1), m_filepath.resolve( "cost" ) ) );
+        m_attributes.put ("location", new StringFile( data.get(2), m_filepath.resolve( "location" ) ) );
+        m_attributes.put ("description", new StringFile( data.get(3), m_filepath.resolve( "description" ) ) );
+        m_attributes.put ("date", new StringFile( data.get(4), m_filepath.resolve( "date" ) ) );
+        m_attributes.put ("category", new StringFile( data.get(5), m_filepath.resolve( "category" ) ) );
 
     }
 

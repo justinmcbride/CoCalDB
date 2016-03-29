@@ -1,14 +1,15 @@
 package main.Entities;
 
 import main.Structures.MicroMap;
+import org.eclipse.jetty.util.PathWatcher;
+import org.eclipse.jetty.websocket.common.io.http.HttpResponseHeaderParser;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -18,8 +19,8 @@ public abstract class DirectoryMaker {
     public ReentrantLock lock = new ReentrantLock(true);
     public int m_ID;
     protected java.nio.file.Path m_filepath;
-    protected List<File<?>> m_files = new ArrayList();
-    protected List<ReferenceList> m_references = new ArrayList() ;
+    protected Map<String, ReferenceList> m_references = new HashMap<>() ;
+    protected Map<String, File<?>> m_attributes = new HashMap<>();
 
     protected Integer m_id = null;
 
@@ -50,22 +51,28 @@ public abstract class DirectoryMaker {
             while (itr.hasNext()) {
                 MicroMap<String, String> change = itr.next();
                 String attribute = change.getKey();
-                Path path = m_filepath.resolve(attribute);
-                File.CommitChange(path, change.getVal());
+                try {m_attributes.get(attribute).SetValue(change.getVal());}
+                catch (ParseException e)
+                {
+                    System.out.println(e);
+                }
             }
         }
         finally{
             lock.unlock();
-            //call refresh on all attributes
-            this.refresh();
         }
     }
 
     public void refresh(){
-        Iterator itr = m_files.iterator();
+        Iterator itr = m_attributes.entrySet().iterator();
         while(itr.hasNext()){
             File file = (File) itr.next();
             file.Refresh();
+        }
+        itr = m_references.entrySet().iterator();
+        while(itr.hasNext()){
+            ReferenceList ref = (ReferenceList) itr.next();
+            ref.refresh();
         }
     }
     public void delete(){
@@ -78,7 +85,7 @@ public abstract class DirectoryMaker {
                 if(f.isDirectory()) {
                     deleteFolder(f);
                 } else {
-                    System.out.println("deleting" + f.toString());
+                    System.out.println("deleting " + f.toString());
                     f.delete();
                 }
             }

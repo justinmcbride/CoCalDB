@@ -1,6 +1,7 @@
 package Test;
 
 import main.Entities.*;
+import main.Structures.MicroMap;
 
 
 import java.nio.file.Path;
@@ -34,14 +35,26 @@ public class testDriver1 {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
         }
+//        threads.clear();
+//        System.out.println(DB.m_collection_calendars);
+//        for (i = 0; i < NUM_THREADS/2; ++i) {
+//
+//            threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
+//            threads.get(i).start();
+//        }
+//        for (i = 0; i < NUM_THREADS/2; ++i) {
+//            try {
+//                threads.get(i).join();
+//            } catch (InterruptedException e) {}
+//        }
         threads.clear();
         System.out.println(DB.m_collection_calendars);
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < NUM_THREADS/2; ++i) {
 
-            threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
+            threads.add(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, i, Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
             threads.get(i).start();
         }
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < NUM_THREADS/2; ++i) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {}

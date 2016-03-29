@@ -22,7 +22,6 @@ public class Group extends DirectoryMaker {
         return s;
     }
 
-    private Path m_filepath;
     private StringFile m_name;
     private ReferenceList m_members;
     private ReferenceList m_calendar;
@@ -32,18 +31,15 @@ public class Group extends DirectoryMaker {
         m_filepath = m_filepath.resolve( getNextID() );
         System.out.println( "Path: " + m_filepath );
         CreateDirectory( m_filepath );
-        m_files.add(m_name = new StringFile( "group" + __id, m_filepath.resolve( "name" ) ) );
+
+        m_attributes.put ("name", new StringFile( "group" + __id, m_filepath.resolve( "name" ) ) );
         Calendar m_Cal = new Calendar(parentPath, Arrays.asList(data.get(0)+"Calendar",data.get(0)));
-        m_calendar = new ReferenceList( data.get(0) + "Calendar", m_filepath.resolve( "calendar" ) );
+        m_references.put ("Calendar", new ReferenceList( data.get(0) + "Calendar", m_filepath.resolve( "calendar" ) ) );
     }
 
     public Group(Path parentPath, List<String> data, ArrayList<String> members_list ) {
         this(parentPath, data);
-        m_members = new ReferenceList( members_list, m_filepath.resolve( "members" ) );
-    }
-
-    public Integer GetID() {
-        return 0;
+        m_references.put("members", new ReferenceList( members_list, m_filepath.resolve( "members" ) ) );
     }
 
 }

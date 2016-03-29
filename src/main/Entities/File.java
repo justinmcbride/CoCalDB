@@ -35,7 +35,7 @@ public abstract class File<T> {
 
     public void CommitChange(){
         try( BufferedWriter writer = Files.newBufferedWriter(m_fileLocation) ) {
-            System.out.println( "value: " + m_value.toString() );
+            //System.out.println( "value: " + m_value.toString() );
             writer.write( m_value.toString() );
         }
         catch (Exception e) {
@@ -88,8 +88,12 @@ public abstract class File<T> {
         if( commit ) CommitChange();
     }
 
-    public void SetValue( T newValue ) {
-        SetValue( newValue, false );
+    public void SetValue (String newValue) throws ParseException{
+        SetValue(ConvertValue(newValue), true);
     }
+
+//    public void SetValue( T newValue ) {
+//        SetValue( newValue, false );
+//    }
 
 }

@@ -10,7 +10,7 @@ public abstract class dbThrd extends Thread {
     int m_threadID;
     static Database db = Database.GetDB();
     public enum Op {
-        CREATE, EDIT, READ, DELETE
+        CREATE, EDIT, READ, DELETE, ADD
     }
     Op m_op;
 

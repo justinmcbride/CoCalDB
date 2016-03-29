@@ -21,25 +21,18 @@ public class User extends DirectoryMaker{
         return s;
     }
 
-    StringFile m_name;
-    StringFile m_email;
-    StringFile m_password;
-    BooleanFile m_isadmin;
-    ReferenceList m_groups;
-    ReferenceList m_calendar;
-
     public User(Path parentPath, List<String> data) {
         m_filepath = parentPath.resolve( "users" );
         m_filepath = m_filepath.resolve( getNextID().toString() );
         System.out.println( "Path: " + m_filepath );
         CreateDirectory( m_filepath );
-        m_files.add( m_name = new StringFile( "", m_filepath.resolve( "name" ) ) );
-        m_files.add( m_email = new StringFile( "", m_filepath.resolve( "email" ) ) );
-        m_files.add( m_password = new StringFile( "", m_filepath.resolve( "password" ) ) );
-        m_files.add( m_isadmin = new BooleanFile(false, m_filepath.resolve( "isadmin") ) );
-        m_groups = new ReferenceList(m_filepath.resolve( "groups" ) ) ;
+        m_attributes.put("name", new StringFile( "", m_filepath.resolve( "name" ) ) );
+        m_attributes.put("email", new StringFile( "", m_filepath.resolve( "email" ) ) );
+        m_attributes.put("password", new StringFile( "", m_filepath.resolve( "password" ) ) );
+        m_attributes.put("isadmin", new BooleanFile(false, m_filepath.resolve( "isadmin") ) );
+        m_references.put("groups", new ReferenceList(m_filepath.resolve( "groups" ) ) );
         Calendar m_Cal = new Calendar(parentPath, Arrays.asList(data.get(0)+"Calendar",data.get(1)));
-        m_calendar = new ReferenceList( data.get(1) + "Calendar", m_filepath.resolve( "calendar" ) ) ;
+        m_references.put("Calendar", new ReferenceList( data.get(1) + "Calendar", m_filepath.resolve( "calendar" ) ) );
     }
 
 

@@ -21,15 +21,13 @@ public class Calendar extends DirectoryMaker{
     }
 
     // the following are all attributes of the calendar
-    private StringFile m_name;
-    private ReferenceList m_owner;
-    private ReferenceList m_events;
+
 
     public Calendar(Path myPath, StringFile title, ReferenceList owner, ReferenceList events ) {
         m_filepath = myPath;
-        m_name = title;
-        m_owner = owner;
-        m_events = events;
+        m_attributes.put ("title",  title );
+        m_references.put ("owners", owner );
+        m_references.put ("events", events);
     }
 
 
@@ -41,9 +39,9 @@ public class Calendar extends DirectoryMaker{
         //new File(m_filepath.toString()).mkdirs();                // placed here to not repeat with each attribute
         //System.out.println( "Path: " + m_filepath );
 
-        m_files.add (m_name = new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
-        m_owner = new ReferenceList( data.get(1), m_filepath.resolve( "owners" ) ) ;
-        m_events = new ReferenceList( m_filepath.resolve( "events" ) );
+        m_attributes.put ("title",  new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
+        m_references.put ("owners", new ReferenceList( data.get(1), m_filepath.resolve( "owners" ) ) );
+        m_references.put ("events", new ReferenceList( m_filepath.resolve( "events" ) ) );
     }
 
 
