@@ -37,8 +37,8 @@ public class dbResolverThrd extends dbThrd {
 
     public void run(){
         switch(m_op){
-            case CREATE:{
-                switch(m_col){
+            case CREATE: {
+                switch(m_col) {
                     case CALENDAR:{
                         db.m_collection_calendars.Add(new Calendar(m_root_path, m_data)); break;
                     }
@@ -54,18 +54,26 @@ public class dbResolverThrd extends dbThrd {
                 }
             } break;
             case EDIT: {
-                switch (m_col){
+                switch (m_col) {
                     case CALENDAR:{
-                        db.m_collection_calendars.get(m_dID).edit(m_edits); break;
+                        Calendar c = db.m_collection_calendars.get(m_dID);
+                        if( c!= null ) c.edit(m_edits);
+                        break;
                     }
                     case EVENT: {
-                        db.m_collection_events.get(m_dID).edit(m_edits); break;
+                        Event c = db.m_collection_events.get(m_dID);
+                        if( c!= null ) c.edit(m_edits);
+                        break;
                     }
                     case GROUP: {
-                        db.m_collection_groups.get(m_dID).edit(m_edits); break;
+                        Group c = db.m_collection_groups.get(m_dID);
+                        if( c!= null ) c.edit(m_edits);
+                        break;
                     }
                     case USER: {
-                        db.m_collection_users.get(m_dID).edit(m_edits); break;
+                        User c = db.m_collection_users.get(m_dID);
+                        if( c!= null ) c.edit(m_edits);
+                        break;
                     }
                 }
             } break;
@@ -88,34 +96,55 @@ public class dbResolverThrd extends dbThrd {
             case DELETE: {
                 switch (m_col) {
                     case CALENDAR: {
-                        // System.out.println("remove calendar " + m_dID);
-                        db.m_collection_calendars.Remove(m_dID).delete(); break;
+                        Calendar c = db.m_collection_calendars.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                     case EVENT: {
-                        db.m_collection_events.Remove(m_dID).delete(); break;
+                        Event c = db.m_collection_events.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                     case GROUP: {
-                        db.m_collection_groups.Remove(m_dID).delete(); break;
+                        Group c = db.m_collection_groups.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                     case USER: {
-                        db.m_collection_users.Remove(m_dID).delete(); break;
-                    }
-                }
+                        User c = db.m_collection_users.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
+                    }                }
             } break;
             case ADD: {
                 switch (m_col) {
                     case CALENDAR: {
-                        // System.out.println("remove calendar " + m_dID);
-                        db.m_collection_calendars.Remove(m_dID).delete(); break;
+                        Calendar c = db.m_collection_calendars.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                     case EVENT: {
-                        db.m_collection_events.Remove(m_dID).delete(); break;
+                        Event c = db.m_collection_events.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                     case GROUP: {
-                        db.m_collection_groups.Remove(m_dID).delete(); break;
+                        Group c = db.m_collection_groups.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                     case USER: {
-                        db.m_collection_users.Remove(m_dID).delete(); break;
+                        User c = db.m_collection_users.Remove(m_dID);
+                        if( c != null )
+                            c.delete();
+                        break;
                     }
                 }
             } break;
