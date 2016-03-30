@@ -69,7 +69,7 @@ public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
         Node curr = m_head.next;
         if (curr == m_tail || curr == null) { return null; }
         while (curr.value.m_ID != ID) {
-            if (curr.next.next != null) {
+            if (curr.next.next != null) { //curr.next != tail
                 curr = curr.next;
             } else {
                 return null;

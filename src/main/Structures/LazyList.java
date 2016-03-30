@@ -48,9 +48,8 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
 
     public <T extends DirectoryMaker> T Remove(int dID) {
         Window window = find(dID);
-        if( window == null ) return null;
-        Node pred = window.pred;
-        Node curr = window.curr;
+        if (window == null){ return null; }
+        Node pred = window.pred; Node curr = window.curr;
         try {
             pred.lock();
             curr.lock();

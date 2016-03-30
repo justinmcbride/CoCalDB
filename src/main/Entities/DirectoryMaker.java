@@ -45,7 +45,7 @@ public abstract class DirectoryMaker {
 
     public void edit(List<MicroMap<String, String>> edit){
         try {
-            lock.lock();
+            lock();
             Iterator<MicroMap<String, String>> itr = edit.iterator();
             while (itr.hasNext()) {
                 MicroMap<String, String> change = itr.next();
@@ -58,10 +58,32 @@ public abstract class DirectoryMaker {
             }
         }
         finally{
-            lock.unlock();
+            unlock();
         }
     }
 
+    public void add(MicroMap<String, List<String>> newRefs){
+        try {
+            lock();
+            m_references.get(newRefs.getKey()).addRefs(newRefs.getVal());
+        }
+        finally{
+            unlock();
+        }
+    }
+
+    public void remove(MicroMap<String, List<String>> remRefs){
+        try {
+            lock();
+            m_references.get(remRefs.getKey()).remRefs(remRefs.getVal());
+        }
+        finally{
+            unlock();
+        }
+    }
+
+    public void lock(){ lock.lock(); }
+    public void unlock(){ lock.unlock(); }
     public void refresh(){
         Iterator itr = m_attributes.entrySet().iterator();
         while(itr.hasNext()){
