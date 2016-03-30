@@ -21,8 +21,10 @@ public class testDriver1 {
         Path pDB  = Paths.get(System.getProperty("user.dir")).resolve("testDB");
         System.out.println( "WorkDir: " + pDB.toString() );
 
+        DirectoryMaker.delete(pDB);
+
         Database DB = Database.GetDB();
-        DB.Initialize(pDB);
+        DB.Initialize(pDB, "LockFree");
         int i = 0;
         int NUM_THREADS = 10;
         ArrayList<dbResolverThrd> threads = new ArrayList<>();
@@ -35,18 +37,6 @@ public class testDriver1 {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
         }
-//        threads.clear();
-//        System.out.println(DB.m_collection_calendars);
-//        for (i = 0; i < NUM_THREADS/2; ++i) {
-//
-//            threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
-//            threads.get(i).start();
-//        }
-//        for (i = 0; i < NUM_THREADS/2; ++i) {
-//            try {
-//                threads.get(i).join();
-//            } catch (InterruptedException e) {}
-//        }
         threads.clear();
         System.out.println(DB.m_collection_calendars);
         for (i = 0; i < NUM_THREADS/2; ++i) {
@@ -59,6 +49,19 @@ public class testDriver1 {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
         }
+        //threads.clear();
+        System.out.println(DB.m_collection_calendars);
+        for (i = 5; i < NUM_THREADS; ++i) {
+
+            threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
+            threads.get(i).start();
+        }
+        for (i = 5; i < NUM_THREADS; ++i) {
+            try {
+                threads.get(i).join();
+            } catch (InterruptedException e) {}
+        }
+
 
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );

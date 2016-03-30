@@ -76,7 +76,10 @@ public abstract class DirectoryMaker {
         }
     }
     public void delete(){
-        deleteFolder(m_filepath.toFile());
+        delete(m_filepath);
+    }
+    public static void delete(Path filepath){
+        deleteFolder(filepath.toFile());
     }
     public static void deleteFolder(java.io.File folder) {    // taken from http://stackoverflow.com/questions/7768071/how-to-delete-directory-content-in-java
         java.io.File[] files = folder.listFiles();

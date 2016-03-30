@@ -33,10 +33,10 @@ public class Database {
     private boolean m_initialized;
     Server m_server;
 
-    public LazyList<Group> m_collection_groups;
-    public LazyList<Event> m_collection_events;
-    public LazyList<User> m_collection_users;
-    public LazyList<Calendar> m_collection_calendars;
+    public AbstractConcurrentList<Group> m_collection_groups;
+    public AbstractConcurrentList<Event> m_collection_events;
+    public AbstractConcurrentList<User> m_collection_users;
+    public AbstractConcurrentList<Calendar> m_collection_calendars;
 
     public boolean AddGroup( Group group ) {
         return m_collection_groups.Add( group );
@@ -55,17 +55,24 @@ public class Database {
     }
 
     private Database() {
-
         m_initialized = false;
     }
 
-    public boolean Initialize( Path rootLocation ) {
+    public boolean Initialize( Path rootLocation, String listType ) {
         m_root_path = rootLocation;
         dbThrd.m_root_path = m_root_path;
-        m_collection_groups = new LazyList<>();
-        m_collection_events = new LazyList<>();
-        m_collection_users = new LazyList<>();
-        m_collection_calendars = new LazyList<>();
+        if (listType == "Lazy") {
+            m_collection_groups = new LazyList<>();
+            m_collection_events = new LazyList<>();
+            m_collection_users = new LazyList<>();
+            m_collection_calendars = new LazyList<>();
+        }
+        else if (listType == "LockFree"){
+            m_collection_groups = new LockFreeList<>();
+            m_collection_events = new LockFreeList<>();
+            m_collection_users = new LockFreeList<>();
+            m_collection_calendars = new LockFreeList<>();
+        }
 
         if( Files.notExists( m_root_path ) ) {
             if( CreateRoot() ) m_initialized = true;
