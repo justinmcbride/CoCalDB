@@ -14,9 +14,19 @@ public class FloatFile extends File<Float> {
     public FloatFile( Float value, Path myPath ) {
         super( value, myPath );
     }
+
     public FloatFile( String value, Path myPath ) {
-        this(Float.parseFloat(value), myPath );
+        this( Float.parseFloat(value), myPath );
     }
+
+    public FloatFile( Float value, Path myPath, boolean exists ) {
+        super( value, myPath, exists );
+    }
+
+    public FloatFile( String value, Path myPath, boolean exists ) {
+        this( Float.parseFloat(value), myPath, exists );
+    }
+
     public Float ConvertValue(String s) throws ParseException {
         try {
             return Float.parseFloat( s );

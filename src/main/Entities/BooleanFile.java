@@ -14,6 +14,14 @@ public class BooleanFile extends File<Boolean> {
         this(Boolean.parseBoolean(value), myPath );
     }
 
+    public BooleanFile( Boolean value, Path myPath, boolean exists ) {
+        super( value, myPath, exists );
+    }
+
+    public BooleanFile( String value, Path myPath, boolean exists ) {
+        this( Boolean.parseBoolean(value), myPath, exists );
+    }
+
     public Boolean ConvertValue(String s) throws ParseException {
         try {
             return Boolean.parseBoolean( s );

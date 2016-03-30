@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Warren on 3/23/2016.
  * Defines the calendar class for CoCal
  */
-public class Calendar extends DirectoryMaker{
+public class Calendar extends DirectoryMaker {
     // a unique id for each calendar to have
     static AtomicInteger __id = new AtomicInteger();
     String getNextID() {
@@ -22,27 +22,21 @@ public class Calendar extends DirectoryMaker{
 
     // the following are all attributes of the calendar
 
-
-    public Calendar(Path myPath, StringFile title, ReferenceList owner, ReferenceList events ) {
+    public Calendar( Path myPath, StringFile title, ReferenceList owner, ReferenceList events ) {
         m_filepath = myPath;
-        m_attributes.put ("title",  title );
-        m_references.put ("owners", owner );
-        m_references.put ("events", events);
+        m_attributes.put( "title",  title );
+        m_references.put( "owner", owner );
+        m_references.put( "events", events );
     }
 
 
-    public Calendar(Path parentPath , List<String> data) {
+    public Calendar( Path parentPath , List<String> data ) {
         Path path_events = parentPath.resolve( "calendars" );
-        //System.out.println( "Path in: " + path_events.toString() );
         m_filepath = path_events.resolve( getNextID().toString() );
         CreateDirectory( m_filepath );
-        //new File(m_filepath.toString()).mkdirs();                // placed here to not repeat with each attribute
-        //System.out.println( "Path: " + m_filepath );
 
-        m_attributes.put ("title",  new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
-        m_references.put ("owners", new ReferenceList( data.get(1), m_filepath.resolve( "owners" ) ) );
-        m_references.put ("events", new ReferenceList( m_filepath.resolve( "events" ) ) );
+        m_attributes.put( "title",  new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );
+        m_references.put( "owner", new ReferenceList( data.get(1), m_filepath.resolve( "owner" ) ) );
+        m_references.put( "events", new ReferenceList( m_filepath.resolve( "events" ) ) );
     }
-
-
 }

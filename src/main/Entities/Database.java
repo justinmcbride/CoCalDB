@@ -81,18 +81,18 @@ public class Database {
                         DirectoryStream<Path> stream_calendars = Files.newDirectoryStream( item );
                         for( Path item_calendar : stream_calendars ) {
                             int id = Integer.parseInt(item_calendar.getFileName().toString());
-                            System.out.println( "id = " + id );
+
                             StringFile title = null;
                             ReferenceList events = null;
                             ReferenceList owner = null;
+
                             DirectoryStream<Path> stream_calendar =  Files.newDirectoryStream( item_calendar );
                             for( Path item_attribute : stream_calendar ) {
                                 if( item_attribute.getFileName().toString().equals( "title" ) ) {
                                     List<String> lines = Files.readAllLines( item_attribute );
                                     title = new StringFile( lines.get(0), item_attribute, true );
-                                    System.out.println( "title: " + title.ReadValue() );
                                 }
-                                if( item_attribute.getFileName().toString().equals( "owners" ) ) {
+                                if( item_attribute.getFileName().toString().equals( "owner" ) ) {
                                     owner = new ReferenceList( item_attribute, true );
                                 }
                                 if( item_attribute.getFileName().toString().equals( "events" ) ) {
@@ -101,9 +101,111 @@ public class Database {
                             }
                             m_collection_calendars.Add( new Calendar( item_calendar, title, events, owner ) );
                         }
-                    }
-                }
+                    } // end calendars
+                    else if( item.getFileName().toString().equals( "groups" ) ) {
+                        DirectoryStream<Path> stream_groups = Files.newDirectoryStream( item );
+                        for( Path item_group : stream_groups ) {
+                            int id = Integer.parseInt(item_group.getFileName().toString());
 
+                            StringFile name = null;
+                            ReferenceList members = null;
+                            ReferenceList calendar = null;
+
+                            DirectoryStream<Path> stream_calendar =  Files.newDirectoryStream( item_group );
+                            for( Path item_attribute : stream_calendar ) {
+                                if( item_attribute.getFileName().toString().equals( "name" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    name = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                if( item_attribute.getFileName().toString().equals( "members" ) ) {
+                                    members = new ReferenceList( item_attribute, true );
+                                }
+                                if( item_attribute.getFileName().toString().equals( "calendar" ) ) {
+                                    calendar = new ReferenceList( item_attribute, true );
+                                }
+                            }
+                            m_collection_groups.Add( new Group( item_group, name, members, calendar ) );
+                        }
+                    } // end groups
+                    else if( item.getFileName().toString().equals( "events" ) ) {
+                        DirectoryStream<Path> stream_events = Files.newDirectoryStream( item );
+                        for( Path item_event : stream_events ) {
+                            int id = Integer.parseInt( item_event.getFileName().toString() );
+
+                            StringFile title = null;
+                            StringFile location = null;
+                            StringFile description = null;
+                            StringFile date = null;
+                            StringFile category = null;
+                            FloatFile cost = null;
+
+                            DirectoryStream<Path> stream_calendar =  Files.newDirectoryStream( item_event );
+                            for( Path item_attribute : stream_calendar ) {
+                                if( item_attribute.getFileName().toString().equals( "title" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    title = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "location" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    location = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "description" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    description = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "date" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    date = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "category" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    category = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "title" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    cost = new FloatFile( lines.get(0), item_attribute, true );
+                                }
+                            }
+                            m_collection_events.Add( new Event( item_event, title, location, description, date, category, cost ) );
+                        }
+                    } // end events
+                    else if( item.getFileName().toString().equals( "users" ) ) {
+                        DirectoryStream<Path> stream_events = Files.newDirectoryStream( item );
+                        for( Path item_user : stream_events ) {
+                            int id = Integer.parseInt( item_user.getFileName().toString() );
+
+                            StringFile name = null;
+                            StringFile email = null;
+                            StringFile password = null;
+                            BooleanFile isadmin = null;
+                            ReferenceList groups = null;
+
+                            DirectoryStream<Path> stream_calendar =  Files.newDirectoryStream( item_user );
+                            for( Path item_attribute : stream_calendar ) {
+                                if( item_attribute.getFileName().toString().equals( "name" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    name = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "email" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    email = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "password" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    password = new StringFile( lines.get(0), item_attribute, true );
+                                }
+                                else if( item_attribute.getFileName().toString().equals( "isadmin" ) ) {
+                                    List<String> lines = Files.readAllLines( item_attribute );
+                                    isadmin = new BooleanFile( lines.get(0), item_attribute, true );
+                                }
+                                if( item_attribute.getFileName().toString().equals( "groups" ) ) {
+                                    groups = new ReferenceList( item_attribute, true );
+                                }
+                            }
+                            m_collection_users.Add( new User( item_user, name, email, password, isadmin, groups ) );
+                        }
+                    } // end users
+                } // end iterate over db
             }
             catch( IOException e ) {
                 System.out.println( "Couldn't open " + e.getMessage() + ": " + e.getCause() );

@@ -22,22 +22,24 @@ public class Group extends DirectoryMaker {
         return s;
     }
 
-    private StringFile m_name;
-    private ReferenceList m_members;
-    private ReferenceList m_calendar;
-
-    public Group(Path parentPath, List<String> data ) {
+    public Group( Path parentPath, List<String> data ) {
         m_filepath = parentPath.resolve( "groups" );
         m_filepath = m_filepath.resolve( getNextID() );
-        System.out.println( "Path: " + m_filepath );
         CreateDirectory( m_filepath );
 
-        m_attributes.put ("name", new StringFile( "group" + __id, m_filepath.resolve( "name" ) ) );
+        m_attributes.put( "name", new StringFile( "group" + __id, m_filepath.resolve( "name" ) ) );
         Calendar m_Cal = new Calendar(parentPath, Arrays.asList(data.get(0)+"Calendar",data.get(0)));
-        m_references.put ("Calendar", new ReferenceList( data.get(0) + "Calendar", m_filepath.resolve( "calendar" ) ) );
+        m_references.put( "Calendar", new ReferenceList( data.get(0) + "Calendar", m_filepath.resolve( "calendar" ) ) );
     }
 
-    public Group(Path parentPath, List<String> data, ArrayList<String> members_list ) {
+    public Group( Path myPath, StringFile name, ReferenceList members, ReferenceList calendar ) {
+        m_filepath = myPath;
+        m_attributes.put( "name", name );
+        m_references.put( "members", members );
+        m_references.put( "calendar", calendar );
+    }
+
+    public Group( Path parentPath, List<String> data, ArrayList<String> members_list ) {
         this(parentPath, data);
         m_references.put("members", new ReferenceList( members_list, m_filepath.resolve( "members" ) ) );
     }
