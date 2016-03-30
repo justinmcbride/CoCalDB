@@ -119,6 +119,23 @@ public class dbResolverThrd extends dbThrd {
                     }
                 }
             } break;
+            case REMOVE: {
+                switch (m_col) {
+                    case CALENDAR: {
+                        System.out.println("remove calendar " + m_dID);
+                        db.m_collection_calendars.Remove(m_dID).delete(); break;
+                    }
+                    case EVENT: {
+                        db.m_collection_events.Remove(m_dID).delete(); break;
+                    }
+                    case GROUP: {
+                        db.m_collection_groups.Remove(m_dID).delete(); break;
+                    }
+                    case USER: {
+                        db.m_collection_users.Remove(m_dID).delete(); break;
+                    }
+                }
+            } break;
 
         }
     }

@@ -2,57 +2,25 @@ package main.Structures;
 
 import main.Entities.DirectoryMaker;
 
-import java.nio.file.DirectoryStream;
-import java.util.concurrent.atomic.AtomicMarkableReference;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T> {
-
-    private LazyListNode m_head;
-    private LazyListNode m_tail;
-    private LazyListNode m_tail_pred;
-
-    //private ReentrantLock m_lock;
-
-    class LazyListNode<T extends DirectoryMaker> extends Node<T> {
-        LazyListNode next = null;
-        private ReentrantLock m_lock;
-        AtomicMarkableReference<LazyListNode> m_marked;
-
-        LazyListNode( T val ) {
-            super( val );
-            m_lock = new ReentrantLock();
-            m_marked = new AtomicMarkableReference<>(this, false);
-        }
-        LazyListNode(boolean init){
-            this(null);
-        }
-
-        public void lock() {
-            m_lock.lock();
-        }
-
-        public void unlock() {
-            m_lock.unlock();
-        }
-    }
+    private Node m_tail_pred;
 
     public LazyList() {
         super();
-        m_head = new LazyListNode(false);
-        m_tail = new LazyListNode(false);
+        m_head = new Node(null, true);
+        m_tail = new Node(null, true);
         m_head.next = m_tail;
         m_tail_pred = m_head;
     }
 
-    private Boolean Validate( LazyListNode pred, LazyListNode curr ) {
-        return !pred.m_marked.isMarked() && !curr.m_marked.isMarked() && (pred.next == curr);
+    private Boolean Validate(Node pred, Node curr ) {
+        return !pred.m_next.isMarked() && !curr.m_next.isMarked() && (pred.next == curr);
     }
 
     public boolean Add(T newValue) {
         if (newValue == null) {return false;}
-        LazyListNode<T> newNode = new LazyListNode<>( newValue );
-        LazyListNode pred = m_tail_pred;
+        Node<T> newNode = new Node<>( newValue, true );
+        Node pred = m_tail_pred;
         try {
             pred.lock();
             m_tail.lock();
@@ -79,21 +47,13 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
     }
 
     public <T extends DirectoryMaker> T Remove(int dID) {
-        LazyListNode curr = m_head.next;
-        if (curr == m_tail) { return null; }
-        LazyListNode pred = m_head;
-        while(curr.value.m_ID != dID) {
-            pred = curr;
-            if(curr.next != m_tail) {
-                curr = curr.next;
-            }
-            else { return null; }
-        }
+        Window window = find(dID);
+        Node pred = window.pred; Node curr = window.curr;
         try {
             pred.lock();
             curr.lock();
             if (Validate(pred, curr)) {
-                curr.m_marked.set(curr, true);
+                curr.m_next.set(curr, true);
                 pred.next = curr.next;
                 m_listsize.decrementAndGet();
                 return (T) curr.value;
@@ -108,23 +68,8 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
         }
     }
 
-    @Override
-    public T Get(int id ) {
-        LazyListNode curr = m_head;
-        LazyListNode pred = null;
-        while(curr.value.GetID() != id) {
-            pred = curr;
-            if(curr != null) {
-                curr = curr.next;
-            }
-            else { return null; }
-        }
-        return null;
-    }
-
-    @Override
     public String toString(){
-        LazyListNode curr = m_head.next;
+        Node curr = m_head.next;
         String ret = "Calendar len " + m_listsize + ": ";
         while(curr != null){
             if ( curr.getVal() != null) ret = ret + curr.getVal().m_ID + ", ";
@@ -133,18 +78,6 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
         return ret;
     }
 
-    @Override
-    public <T extends DirectoryMaker> T get(int ID) {
-        LazyListNode curr = m_head.next;
-        while (curr.value.m_ID != ID) {
-            if (curr != null) {
-                curr = curr.next;
-            } else {
-                return null;
-            }
-        }
-        return (T) curr.getVal();
-    }
     public boolean Contains(T value) {
         return false;
     }

@@ -36,14 +36,6 @@ public class Event /* implements Commitable */ extends DirectoryMaker {
     }
 
 
-    // the following are all attributes of the event
-    private StringFile m_title;
-    private FloatFile m_cost;
-    private StringFile m_location;
-    private StringFile m_description;
-    private StringFile m_date;
-    private StringFile m_category;
-
     public Event(java.nio.file.Path parentPath, List<String> data) {
         java.nio.file.Path path_events = parentPath.resolve( "events" );
         m_filepath = path_events.resolve( getNextID().toString() );

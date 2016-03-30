@@ -22,10 +22,6 @@ public class Group extends DirectoryMaker {
         return s;
     }
 
-    private StringFile m_name;
-    private ReferenceList m_members;
-    private ReferenceList m_calendar;
-
     public Group(Path parentPath, List<String> data ) {
         m_filepath = parentPath.resolve( "groups" );
         m_filepath = m_filepath.resolve( getNextID() );
