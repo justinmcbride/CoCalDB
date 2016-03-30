@@ -26,11 +26,11 @@ public class Database {
         }
         return s_Database;
     }
-
     static Database s_Database = null;
 
     private Path m_root_path;
     private boolean m_initialized;
+    private String m_list_type;
     Server m_server;
 
     public AbstractConcurrentList<Group> m_collection_groups;
@@ -38,48 +38,39 @@ public class Database {
     public AbstractConcurrentList<User> m_collection_users;
     public AbstractConcurrentList<Calendar> m_collection_calendars;
 
-    public boolean AddGroup( Group group ) {
-        return m_collection_groups.Add( group );
-    }
-
-    public boolean AddUser( User user ) {
-        return m_collection_users.Add( user );
-    }
-
-    public boolean AddCalendar( Calendar calendar ) {
-        return m_collection_calendars.Add( calendar );
-    }
-
-    public boolean AddEvent( Event event ) {
-        return m_collection_events.Add( event );
-    }
-
     private Database() {
         m_initialized = false;
     }
 
-    public boolean Initialize( Path rootLocation, String listType ) {
-        m_root_path = rootLocation;
-        dbThrd.m_root_path = m_root_path;
-        if (listType == "Lazy") {
+    private void CreateCollections() {
+        if( m_list_type.equals( "Lazy" ) ) {
             m_collection_groups = new LazyList<>();
             m_collection_events = new LazyList<>();
             m_collection_users = new LazyList<>();
             m_collection_calendars = new LazyList<>();
         }
-        else if (listType == "LockFree"){
+        else if( m_list_type.equals( "LockFree" ) ) {
             m_collection_groups = new LockFreeList<>();
             m_collection_events = new LockFreeList<>();
             m_collection_users = new LockFreeList<>();
             m_collection_calendars = new LockFreeList<>();
         }
+    }
+
+    public boolean Initialize( Path rootLocation, String listType, boolean fresh ) {
+        m_root_path = rootLocation;
+        m_list_type = listType;
+        dbThrd.m_root_path = m_root_path;
+        
+        if( fresh ) Drop(); // remove everything in the database
+        else        CreateCollections();
 
         if( Files.notExists( m_root_path ) ) {
             if( CreateRoot() ) m_initialized = true;
-            System.out.println( "Root location IS NEW" );
+            // System.out.println( "Root location IS NEW" );
         }
         else {
-            System.out.println( "Root location exists" );
+            // System.out.println( "Root location exists" );
             try {
                 DirectoryStream<Path> stream = Files.newDirectoryStream( m_root_path );
                 for( Path item : stream ) {
@@ -213,9 +204,11 @@ public class Database {
                         }
                     } // end users
                 } // end iterate over db
+                m_initialized = true;
             }
             catch( IOException e ) {
                 System.out.println( "Couldn't open " + e.getMessage() + ": " + e.getCause() );
+                m_initialized = false;
             }
 
         }
@@ -248,8 +241,28 @@ public class Database {
 //        return m_collection_groups.get(id);
 //    }
 
+    public boolean AddGroup( Group group ) {
+        if( !m_initialized ) return false;
+        return m_collection_groups.Add( group );
+    }
+
+    public boolean AddUser( User user ) {
+        if( !m_initialized ) return false;
+        return m_collection_users.Add( user );
+    }
+
+    public boolean AddCalendar( Calendar calendar ) {
+        if( !m_initialized ) return false;
+        return m_collection_calendars.Add( calendar );
+    }
+
+    public boolean AddEvent( Event event ) {
+        if( !m_initialized ) return false;
+        return m_collection_events.Add( event );
+    }
+
     private boolean CreateRoot() {
-        System.out.println( "Creating new database at location: " + m_root_path.toString() );
+//        System.out.println( "Creating new database at location: " + m_root_path.toString() );
         try {
             Files.createDirectories( m_root_path );
         }
@@ -262,5 +275,12 @@ public class Database {
             return false;
         }
         return true;
+    }
+
+    public boolean Drop() {
+        if( m_root_path == null ) return false;
+        CreateCollections();
+
+        return DirectoryMaker.delete( m_root_path );
     }
 }

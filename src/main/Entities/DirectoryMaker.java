@@ -5,9 +5,8 @@ import org.eclipse.jetty.util.PathWatcher;
 import org.eclipse.jetty.websocket.common.io.http.HttpResponseHeaderParser;
 
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -75,24 +74,41 @@ public abstract class DirectoryMaker {
             ref.refresh();
         }
     }
-    public void delete(){
-        delete(m_filepath);
+
+    public void delete() {
+        delete( m_filepath );
     }
-    public static void delete(Path filepath){
-        deleteFolder(filepath.toFile());
-    }
-    public static void deleteFolder(java.io.File folder) {    // taken from http://stackoverflow.com/questions/7768071/how-to-delete-directory-content-in-java
-        java.io.File[] files = folder.listFiles();
-        if(files!=null) { //some JVMs return null for empty dirs
-            for(java.io.File f: files) {
-                if(f.isDirectory()) {
-                    deleteFolder(f);
-                } else {
-                    System.out.println("deleting " + f.toString());
-                    f.delete();
+
+    public static boolean delete( Path path_to_delete ) {    // taken from http://stackoverflow.com/questions/7768071/how-to-delete-directory-content-in-java
+        try {
+            Files.walkFileTree( path_to_delete, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    throws IOException
+                {
+                    // System.out.println( "Deleting file: " + file );
+                    Files.delete( file );
+                    return FileVisitResult.CONTINUE;
                 }
-            }
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException e)
+                    throws IOException
+                {
+                    if ( e == null ) {
+                        // System.out.println( "Deleting directory: " + dir );
+                        Files.delete( dir );
+                        return FileVisitResult.CONTINUE;
+                    }
+                    else {
+                        // directory iteration failed
+                        throw e;
+                    }
+                }
+             });
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
-        folder.delete();
+        return true;
     }
 }

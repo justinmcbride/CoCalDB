@@ -17,55 +17,80 @@ import java.util.Arrays;
 public class testDriver1 {
 
     public static void main(String[] args) {
-        //Path pDB = Paths.get(System.getProperty("user.home"));
-        Path pDB  = Paths.get(System.getProperty("user.dir")).resolve("testDB");
-        System.out.println( "WorkDir: " + pDB.toString() );
-
-        DirectoryMaker.delete(pDB);
+        Path path_database = Paths.get(System.getProperty("user.dir")).resolve("testDB");
+        System.out.println( "Database Directory: " + path_database.toString() );
 
         Database DB = Database.GetDB();
-        DB.Initialize(pDB, "LockFree");
-        int i = 0;
-        int NUM_THREADS = 10;
-        ArrayList<dbResolverThrd> threads = new ArrayList<>();
-        for (i = 0; i < NUM_THREADS; ++i) {
-            threads.add(new dbResolverThrd(i, dbThrd.Op.CREATE, dbThrd.Col.CALENDAR, Arrays.asList("Ca" + i, "justin")));
-            threads.get(i).start();
-        }
-        for (i = 0; i < NUM_THREADS; ++i) {
-            try {
-                threads.get(i).join();
-            } catch (InterruptedException e) {}
-        }
-        threads.clear();
-        System.out.println(DB.m_collection_calendars);
-        for (i = 0; i < NUM_THREADS/2; ++i) {
 
-            threads.add(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, i, Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
-            threads.get(i).start();
-        }
-        for (i = 0; i < NUM_THREADS/2; ++i) {
-            try {
-                threads.get(i).join();
-            } catch (InterruptedException e) {}
-        }
-        //threads.clear();
-        System.out.println(DB.m_collection_calendars);
-        for (i = 5; i < NUM_THREADS; ++i) {
+        int number_of_tests = 5;
 
-            threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
-            threads.get(i).start();
-        }
-        for (i = 5; i < NUM_THREADS; ++i) {
-            try {
-                threads.get(i).join();
-            } catch (InterruptedException e) {}
-        }
+        ArrayList<Integer> number_of_threads = new ArrayList<>();
+        number_of_threads.add( 1 );
+        number_of_threads.add( 3 );
+        number_of_threads.add( 6 );
+        number_of_threads.add( 9 );
+        number_of_threads.add( 15 );
 
+        ArrayList<String> types_of_lists = new ArrayList<>();
+        types_of_lists.add( "LockFree" );
+        types_of_lists.add( "Lazy" );
+
+        System.out.println( "list_type,number_of_threads,duration" );
+        for( String list_type : types_of_lists )
+        {
+            for( int loop = 0; loop < number_of_tests; loop++ )
+            {
+                for( int nThreads : number_of_threads )
+                {
+                    long startTime = System.nanoTime();
+                    DB.Initialize( path_database, list_type, true );
+                    ArrayList<dbResolverThrd> threads = new ArrayList<>();
+
+                    for( int i = 0; i < nThreads; ++i ) {
+                        threads.add(new dbResolverThrd(i, dbThrd.Op.CREATE, dbThrd.Col.CALENDAR, Arrays.asList("Ca" + i, "justin")));
+                        threads.get(i).start();
+                    }
+                    for( int i = 0; i < nThreads; ++i ) {
+                        try {
+                            threads.get(i).join();
+                        } catch (InterruptedException e) {}
+                    }
+                    threads.clear();
+
+                    for( int i = 0; i < nThreads; ++i ) {
+
+                        threads.add(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, i, Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
+                        threads.get(i).start();
+                    }
+                    for( int i = 0; i < nThreads; ++i ) {
+                        try {
+                            threads.get(i).join();
+                        } catch (InterruptedException e) {}
+                    }
+                    threads.clear();
+
+                    for( int i = 0; i < nThreads; ++i ) {
+
+                        threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
+                        threads.get(i).start();
+                    }
+                    for( int i = 0; i < nThreads; ++i ) {
+                        try {
+                            threads.get(i).join();
+                        } catch (InterruptedException e) {}
+                    }
+                    long endTime = System.nanoTime();
+                    long duration = endTime - startTime;
+                    System.out.println( list_type + "," + nThreads + "," + duration );
+                } // end nThreads
+            } // end number_of_tests loop
+        } // end types of lists loop
+
+        
 
 //        System.out.println( "------------------------------------------" );
 //        members.add( "adrian" );
-//        new Group( pDB, members );
+//        new Group( path_database, members );
     }
 
 }

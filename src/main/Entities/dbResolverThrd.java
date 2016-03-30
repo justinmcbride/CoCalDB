@@ -88,7 +88,7 @@ public class dbResolverThrd extends dbThrd {
             case DELETE: {
                 switch (m_col) {
                     case CALENDAR: {
-                        System.out.println("remove calendar " + m_dID);
+                        // System.out.println("remove calendar " + m_dID);
                         db.m_collection_calendars.Remove(m_dID).delete(); break;
                     }
                     case EVENT: {
@@ -105,7 +105,7 @@ public class dbResolverThrd extends dbThrd {
             case ADD: {
                 switch (m_col) {
                     case CALENDAR: {
-                        System.out.println("remove calendar " + m_dID);
+                        // System.out.println("remove calendar " + m_dID);
                         db.m_collection_calendars.Remove(m_dID).delete(); break;
                     }
                     case EVENT: {
@@ -122,7 +122,7 @@ public class dbResolverThrd extends dbThrd {
             case REMOVE: {
                 switch (m_col) {
                     case CALENDAR: {
-                        System.out.println("remove calendar " + m_dID);
+                        // System.out.println("remove calendar " + m_dID);
                         db.m_collection_calendars.Remove(m_dID).delete(); break;
                     }
                     case EVENT: {
