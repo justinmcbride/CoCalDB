@@ -1,9 +1,6 @@
 package Test;
 
-import main.Entities.Database;
-import main.Entities.DirectoryMaker;
-import main.Entities.dbResolverThrd;
-import main.Entities.dbThrd;
+import main.Entities.*;
 import main.Structures.MicroMap;
 
 import java.nio.file.Path;
@@ -24,7 +21,7 @@ public class testDriverOps {
         Path pDB  = Paths.get(System.getProperty("user.dir")).resolve("testDB");
         System.out.println( "WorkDir: " + pDB.toString() );
 
-        DirectoryMaker.delete(pDB);
+        FileHelper.Delete( pDB );
         ArrayList<String> Stringlist = new ArrayList<>();
         ArrayList<MicroMap<String,String>> MapList = new ArrayList<>();
         MicroMap<String,ArrayList<String>> addRem = new MicroMap<>();

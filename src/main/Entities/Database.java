@@ -281,6 +281,6 @@ public class Database {
         if( m_root_path == null ) return false;
         CreateCollections();
 
-        return DirectoryMaker.delete( m_root_path );
+        return FileHelper.Delete( m_root_path );
     }
 }

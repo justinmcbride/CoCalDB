@@ -1,10 +1,10 @@
 package main.Structures;
 
-import main.Entities.DirectoryMaker;
+import main.Collection;
 
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
-public class LockFreeList<T extends DirectoryMaker> extends AbstractConcurrentList<T> {
+public class LockFreeList<T extends Collection> extends AbstractConcurrentList<T> {
     private Node m_tail_pred;
 
 
@@ -38,7 +38,8 @@ public class LockFreeList<T extends DirectoryMaker> extends AbstractConcurrentLi
         return m_tail == m_head;
     }
 
-    public <T extends DirectoryMaker> T Remove(int dID) {
+    @Override
+    public T Remove(int dID) {
         Boolean snip;
         while (true){
             Window window = find(dID);
@@ -58,7 +59,7 @@ public class LockFreeList<T extends DirectoryMaker> extends AbstractConcurrentLi
         Node curr = m_head.next;
         String ret = "Calendar len " + m_listsize + ": ";
         while(curr != null){
-            if ( curr.getVal() != null) ret = ret + curr.getVal().m_ID + ", ";
+            if ( curr.getVal() != null) ret = ret + curr.getVal().GetID() + ", ";
             curr = curr.next;
         }
         return ret;

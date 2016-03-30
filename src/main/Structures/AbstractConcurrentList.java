@@ -1,13 +1,13 @@
 package main.Structures;
 
-import main.Entities.DirectoryMaker;
+import main.Collection;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.concurrent.locks.ReentrantLock;
 
-public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
-    public class Node<T extends DirectoryMaker> {
+public abstract class AbstractConcurrentList<T> {
+    public class Node<T extends Collection> {
         public T value;
         public Node next = null;
         AtomicMarkableReference<Node> m_next;
@@ -49,11 +49,11 @@ public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
         }
     }
 
-    protected Window find(Node<T> head, int key){
+    protected Window find(Node head, int key){
         Node curr = head.next;
         if (curr.next == null) { return null; }
         Node pred = head;
-        while(curr.value.m_ID != key) {
+        while(curr.value.GetID() != key) {
             pred = curr;
             if(curr.next.next != null) { //curr.next != tail
                 curr = curr.next;
@@ -65,10 +65,10 @@ public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
 
     protected Window find(int key){ return find(m_head, key);}
 
-    public <T extends DirectoryMaker> T get(int ID) {
+    public <T extends Collection> T get(int ID) {
         Node curr = m_head.next;
         if (curr == m_tail || curr == null) { return null; }
-        while (curr.value.m_ID != ID) {
+        while (curr.value.GetID() != ID) {
             if (curr.next.next != null) { //curr.next != tail
                 curr = curr.next;
             } else {
@@ -78,12 +78,8 @@ public abstract class AbstractConcurrentList<T extends DirectoryMaker> {
         return (T) curr.getVal();
     }
 
-
-
-
-
     public abstract boolean Add( T newValue );
-    public abstract <T extends DirectoryMaker> T Remove( int dID );
+    public abstract T Remove(int dID );
     public abstract boolean Contains( T newValue );
     public boolean IsEmpty() {
         return m_head == null;

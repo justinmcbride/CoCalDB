@@ -1,17 +1,11 @@
 package main;
 
-import main.Entities.DirectoryMaker;
+import main.Entities.FileHelper;
 import main.Entities.FloatFile;
-import main.Entities.ReferenceList;
 import main.Entities.StringFile;
-import main.Structures.MicroMap;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -20,13 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Defines the Event class for CoCal
  */
 
-public class Event extends DirectoryMaker {
+public class Event extends Collection {
     // a unique id for each event to have
     static AtomicInteger __id  = new AtomicInteger();
     String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
-        m_ID = id.intValue();
+        m_id = id.intValue();
         return s;
     }
 
@@ -43,7 +37,7 @@ public class Event extends DirectoryMaker {
     public Event( Path parentPath, List<String> data ) {
         java.nio.file.Path path_events = parentPath.resolve( "events" );
         m_filepath = path_events.resolve( getNextID().toString() );
-        CreateDirectory( m_filepath );
+        FileHelper.CreateDirectory( m_filepath );
         System.out.println( "Path: " + m_filepath );
 
         m_attributes.put( "title", new StringFile( data.get(0), m_filepath.resolve( "title" ) ) );

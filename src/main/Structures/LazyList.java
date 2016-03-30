@@ -1,8 +1,8 @@
 package main.Structures;
 
-import main.Entities.DirectoryMaker;
+import main.Collection;
 
-public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T> {
+public class LazyList<T extends Collection> extends AbstractConcurrentList<T> {
     private Node m_tail_pred;
 
     public LazyList() {
@@ -19,7 +19,7 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
 
     public boolean Add(T newValue) {
         if (newValue == null) {return false;}
-        Node<T> newNode = new Node<>( newValue, true );
+        Node newNode = new Node<>( newValue, true );
         Node pred = m_tail_pred;
         try {
             pred.lock();
@@ -46,7 +46,8 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
         return m_tail == m_head;
     }
 
-    public <T extends DirectoryMaker> T Remove(int dID) {
+    @Override
+    public T Remove(int dID) {
         Window window = find(dID);
         if (window == null){ return null; }
         Node pred = window.pred; Node curr = window.curr;
@@ -73,7 +74,7 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
         Node curr = m_head.next;
         String ret = "Calendar len " + m_listsize + ": ";
         while(curr != null){
-            if ( curr.getVal() != null) ret = ret + curr.getVal().m_ID + ", ";
+            if ( curr.getVal() != null) ret = ret + curr.getVal().GetID() + ", ";
             curr = curr.next;
         }
         return ret;
@@ -82,9 +83,6 @@ public class LazyList<T extends DirectoryMaker> extends AbstractConcurrentList<T
     public boolean Contains(T value) {
         return false;
     }
-
-
-
 
     public boolean Edit(T value){
         return false;

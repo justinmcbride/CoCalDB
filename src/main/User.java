@@ -2,22 +2,20 @@ package main;
 import main.Entities.*;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by Warren on 3/23/2016.
  * Defines the User class for CoCal
  */
 
-public class User extends DirectoryMaker{
+public class User extends Collection {
     static AtomicInteger __id  = new AtomicInteger();
     String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
-        m_ID = id.intValue();
+        m_id = id.intValue();
         return s;
     }
 
@@ -30,7 +28,7 @@ public class User extends DirectoryMaker{
         m_filepath = parentPath.resolve( "users" );
         m_filepath = m_filepath.resolve( getNextID().toString() );
         System.out.println( "Path: " + m_filepath );
-        CreateDirectory( m_filepath );
+        FileHelper.CreateDirectory( m_filepath );
 
         m_attributes.put("name", new StringFile( "", m_filepath.resolve( "name" ) ) );
         m_attributes.put("email", new StringFile( "", m_filepath.resolve( "email" ) ) );

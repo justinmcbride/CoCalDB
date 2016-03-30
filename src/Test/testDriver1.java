@@ -39,12 +39,12 @@ public class testDriver1 {
         System.out.println( "list_type,number_of_threads,duration" );
         for( String list_type : types_of_lists )
         {
-            for( int loop = 0; loop < number_of_tests; loop++ )
+            for( int nThreads : number_of_threads )
             {
-                for( int nThreads : number_of_threads )
+                for( int loop = 0; loop < number_of_tests; loop++ )
                 {
-                    long startTime = System.nanoTime();
                     DB.Initialize( path_database, list_type, true );
+                    long startTime = System.nanoTime();
                     ArrayList<dbResolverThrd> threads = new ArrayList<>();
 
                     for( int i = 0; i < nThreads; ++i ) {

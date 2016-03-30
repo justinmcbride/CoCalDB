@@ -1,12 +1,9 @@
 package main.Entities;
 
-import main.Structures.MicroMap;
-
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 /**
  * Object to hold list of references to other db collection documents
  */
-public class ReferenceList extends DirectoryMaker {
+public class ReferenceList {
     private Boolean m_single;
     private ArrayList<ReferenceFile> m_list;
     private Path m_path;
@@ -36,7 +33,7 @@ public class ReferenceList extends DirectoryMaker {
     public ReferenceList( Path myPath ) {
         m_path = myPath;
         m_list = new ArrayList<>();
-        CreateDirectory( m_path );
+        FileHelper.CreateDirectory( m_path );
     }
 
     public ReferenceList( String id, Path myPath ) {
@@ -56,6 +53,12 @@ public class ReferenceList extends DirectoryMaker {
         ReferenceFile file = new ReferenceFile( m_path.resolve(ref) );
         m_list.add( file );
         return true;
+    }
+
+    public void Refresh() {
+        for( ReferenceFile file : m_list ) {
+            file.Refresh();
+        }
     }
 
 
@@ -92,11 +95,9 @@ public class ReferenceList extends DirectoryMaker {
                     System.out.println("MATCH");
                     remRefs.remove(rem);
                     m_list.remove(curr);
-                    DirectoryMaker.delete(curr.m_fileLocation);
+                    FileHelper.Delete( curr.m_fileLocation );
                 }
-
             }
-
         }
         return remRefs.isEmpty();
     }

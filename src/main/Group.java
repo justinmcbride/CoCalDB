@@ -1,31 +1,31 @@
 package main;
 import main.Entities.*;
 
-import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static main.Entities.FileHelper.CreateDirectory;
+
 /**
- * Created by Warren on 3/23/2016.
  * Defines the Group class for CoCal
  */
-public class Group extends DirectoryMaker {
+public class Group extends Collection {
     // a unique id for group event to have
     static AtomicInteger __id  = new AtomicInteger();
     String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
-        m_ID = id.intValue();
+        m_id = id.intValue();
         return s;
     }
 
     public Group( Path parentPath, List<String> data ) {
         m_filepath = parentPath.resolve( "groups" );
         m_filepath = m_filepath.resolve( getNextID() );
-        CreateDirectory( m_filepath );
+        FileHelper.CreateDirectory( m_filepath );
 
         m_attributes.put( "name", new StringFile( "group" + __id, m_filepath.resolve( "name" ) ) );
         Calendar m_Cal = new Calendar(parentPath, Arrays.asList(data.get(0)+"Calendar",data.get(0)));
