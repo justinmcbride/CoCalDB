@@ -7,10 +7,10 @@ import java.nio.file.Path;
  */
 public abstract class dbThrd extends Thread {
     public static Path m_root_path;
-    int m_threadID;
+    private int m_threadID;
     static Database db = Database.GetDB();
     public enum Op {
-        CREATE, EDIT, READ, DELETE, ADD, REMOVE
+        CREATE, EDIT, READ, DELETE, LINK, UNLINK
     }
     Op m_op;
 
@@ -30,16 +30,16 @@ public abstract class dbThrd extends Thread {
 //
 //    }
 
-    protected dbThrd() {}
+    dbThrd() {}
 
-    protected dbThrd(int ID) {
+    private dbThrd(int ID) {
         m_threadID = ID;
     }
-    protected dbThrd(int ID, Op op){
+    private dbThrd(int ID, Op op){
        this(ID);
        m_op = op;
     }
-    protected dbThrd(int ID, Op op, Col col){
+    dbThrd(int ID, Op op, Col col){
         this(ID,op);
         m_col = col;
     }

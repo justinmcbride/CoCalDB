@@ -6,7 +6,7 @@ import jdk.nashorn.internal.parser.JSONParser;
  * Parses JSON requests from an angularJS app and
  * spawns a Resolver thread to carry out the db operation
  */
-public class dbRequestThrd extends dbThrd {
+class dbRequestThrd extends dbThrd {
     JSONParser parser;
 
     protected dbRequestThrd(){

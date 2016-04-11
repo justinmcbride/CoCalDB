@@ -16,7 +16,7 @@ public abstract class File<T> {
     Path m_fileLocation;
     private T m_value;
 
-    public File( T value, Path myPath, boolean exists )
+    File(T value, Path myPath, boolean exists)
     {
         m_value = value;
         m_fileLocation = myPath;
@@ -27,13 +27,13 @@ public abstract class File<T> {
         }
     }
 
-    public File( T value, Path myPath ) {
+    File(T value, Path myPath) {
         this( value, myPath, false );
     }
 
-    public abstract T ConvertValue( String s ) throws ParseException;
+    protected abstract T ConvertValue(String s) throws ParseException;
 
-    public void CommitChange(){
+    private void CommitChange(){
         try( BufferedWriter writer = Files.newBufferedWriter(m_fileLocation) ) {
             //System.out.println( "value: " + m_value.toString() );
             writer.write( m_value.toString() );
@@ -73,7 +73,7 @@ public abstract class File<T> {
         }
     }
 
-    public T ReadValue( boolean refresh ) {
+    private T ReadValue(boolean refresh) {
         if( refresh ) Refresh();
         return m_value;
     }
@@ -82,7 +82,7 @@ public abstract class File<T> {
         return ReadValue( false );
     }
 
-    public void SetValue( T newValue, boolean commit ) {
+    private void SetValue(T newValue, boolean commit) {
         m_value = newValue;
 
         if( commit ) CommitChange();

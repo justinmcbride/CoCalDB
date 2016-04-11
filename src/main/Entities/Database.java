@@ -3,16 +3,12 @@ package main.Entities;
 import main.*;
 import main.Structures.*;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.websocket.jsr356.decoders.IntegerDecoder;
-import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +22,7 @@ public class Database {
         }
         return s_Database;
     }
-    static Database s_Database = null;
+    private static Database s_Database = null;
 
     private Path m_root_path;
     private boolean m_initialized;
@@ -61,6 +57,10 @@ public class Database {
         m_root_path = rootLocation;
         m_list_type = listType;
         dbThrd.m_root_path = m_root_path;
+        Calendar.resetIDs();
+        Event.resetIDs();
+        User.resetIDs();
+        Group.resetIDs();
         
         if( fresh ) Drop(); // remove everything in the database
         else        CreateCollections();
@@ -96,8 +96,10 @@ public class Database {
                                 if( item_attribute.getFileName().toString().equals( "events" ) ) {
                                     events = new ReferenceList( item_attribute, true );
                                 }
+                            }try { m_collection_calendars.Add( new Calendar( item_calendar, title, events, owner ) );}
+                            catch (Exception e){
+                                System.out.println(e);
                             }
-                            m_collection_calendars.Add( new Calendar( item_calendar, title, events, owner ) );
                         }
                     } // end calendars
                     else if( item.getFileName().toString().equals( "groups" ) ) {
@@ -122,7 +124,10 @@ public class Database {
                                     calendar = new ReferenceList( item_attribute, true );
                                 }
                             }
-                            m_collection_groups.Add( new Group( item_group, name, members, calendar ) );
+                            try { m_collection_groups.Add( new Group( item_group, name, members, calendar ) );}
+                            catch (Exception e){
+                                System.out.println(e);
+                            }
                         }
                     } // end groups
                     else if( item.getFileName().toString().equals( "events" ) ) {
@@ -164,7 +169,10 @@ public class Database {
                                     cost = new FloatFile( lines.get(0), item_attribute, true );
                                 }
                             }
-                            m_collection_events.Add( new Event( item_event, title, location, description, date, category, cost ) );
+                            try { m_collection_events.Add( new Event( item_event, title, location, description, date, category, cost ) );}
+                            catch (Exception e){
+                                System.out.println(e);
+                            }
                         }
                     } // end events
                     else if( item.getFileName().toString().equals( "users" ) ) {
@@ -200,7 +208,10 @@ public class Database {
                                     groups = new ReferenceList( item_attribute, true );
                                 }
                             }
-                            m_collection_users.Add( new User( item_user, name, email, password, isadmin, groups ) );
+                            try { m_collection_users.Add( new User( item_user, name, email, password, isadmin, groups ) );}
+                            catch (Exception e){
+                                System.out.println(e);
+                            }
                         }
                     } // end users
                 } // end iterate over db
@@ -277,7 +288,7 @@ public class Database {
         return true;
     }
 
-    public boolean Drop() {
+    private boolean Drop() {
         if( m_root_path == null ) return false;
         CreateCollections();
 

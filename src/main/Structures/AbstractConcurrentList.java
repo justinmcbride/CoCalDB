@@ -2,42 +2,59 @@ package main.Structures;
 
 import main.Collection;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class AbstractConcurrentList<T> {
     public class Node<T extends Collection> {
-        public T value;
-        public Node next = null;
-        AtomicMarkableReference<Node> m_next;
-        protected ReentrantLock m_lock = null;
+        private T value;
+        public Node next;                     //only used in Lazy
+        private volatile boolean m_mark; //only used in Lazy
+        private ReentrantLock m_lock;       //only used in Lazy
+        AtomicMarkableReference<Node> m_next; //only used in LockFree
 
         public Node(T value ) {
             this.value = value;
-            m_next = new AtomicMarkableReference<>(this, false);
+            this.next = null;
         }
         public Node(T value, boolean lock ) {
             this(value);
-            if ( lock ) { m_lock = new ReentrantLock(); }
+            if ( lock ) {
+                m_lock = new ReentrantLock();
+                m_mark = false;
+            }
         }
         public T getVal(){
             return value;
+        }
+        public Integer getID(){
+            return value.GetID();
         }
 
         public void lock() {
             m_lock.lock();
         }
         public void unlock() { m_lock.unlock(); }
-        public boolean isMarked(){ return m_next.isMarked(); }
-        public Object getMark(boolean[] marked){ return m_next.get(marked); }
+        public boolean isMarked(){ return m_mark; }
+
+        public void mark(boolean change){ m_mark = change; }
+
+        //public Object getMark(boolean[] marked){ return m_next.get(marked); }
     }
 
-    protected Node m_head = null;
-    protected Node m_tail = null;
-    public AtomicInteger m_listsize = null;
+    public class deadCol extends Collection {
+        deadCol(Integer id){ m_id = id; }
+    }
 
-    AbstractConcurrentList() {
+    Node m_head;
+    Node m_tail;
+    AtomicInteger m_listsize;
+
+    AbstractConcurrentList(boolean lock) {
+        m_head = new Node(new deadCol(Integer.MIN_VALUE), lock);
+        m_tail = new Node(new deadCol(Integer.MAX_VALUE), lock);
         m_listsize = new AtomicInteger();
     }
 
@@ -49,13 +66,15 @@ public abstract class AbstractConcurrentList<T> {
         }
     }
 
-    protected Window find(Node head, int key){
+    Window find(Integer key){ return find(m_head, key);}
+
+    Window find(Node head, Integer key){
         Node curr = head.next;
-        if (curr.next == null) { return null; }
+        if (curr == null) { return null; } // list would have to be broken
         Node pred = head;
-        while(curr.value.GetID() != key) {
+        while(curr.getID() < key) {
             pred = curr;
-            if(curr.next.next != null) { //curr.next != tail
+            if(curr.next != null) { //curr.next != tail
                 curr = curr.next;
             }
             else { return null; }
@@ -63,25 +82,26 @@ public abstract class AbstractConcurrentList<T> {
         return new Window(pred, curr);
     }
 
-    protected Window find(int key){ return find(m_head, key);}
 
-    public <T extends Collection> T get(int ID) {
+
+    public <T extends Collection> T get(Integer ID) throws NoSuchElementException {
         Node curr = m_head.next;
         if (curr == m_tail || curr == null) { return null; }
-        while (curr.value.GetID() != ID) {
-            if (curr.next.next != null) { //curr.next != tail
+        while (curr.value.GetID() < ID) {
+            if (curr.next != m_tail) {
                 curr = curr.next;
             } else {
                 return null;
             }
         }
-        return (T) curr.getVal();
+        if (curr.value.GetID().equals(ID))
+            return (T) curr.getVal();
+        else
+            throw new main.Exceptions.NoSuchElementException(this);
     }
 
     public abstract boolean Add( T newValue );
-    public abstract T Remove(int dID );
+    public abstract T Remove(Integer dID ) throws NoSuchElementException;
     public abstract boolean Contains( T newValue );
-    public boolean IsEmpty() {
-        return m_head == null;
-    }
+    public abstract boolean isEmpty();
 }

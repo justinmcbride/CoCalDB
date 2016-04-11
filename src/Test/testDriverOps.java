@@ -14,7 +14,7 @@ import java.util.List;
  *
  * Test file for basic cocal db system using direct file access
  */
-public class testDriverOps {
+class testDriverOps {
 
     public static void main(String[] args) {
         //Path pDB = Paths.get(System.getProperty("user.home"));
@@ -55,7 +55,7 @@ public class testDriverOps {
         }
         for (i = 0; i < NUM_THREADS; ++i) {
 
-           // threads.set(i, new dbResolverThrd(i, dbThrd.Op.ADD, dbThrd.Col.CALENDAR, 0, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i))));
+           // threads.set(i, new dbResolverThrd(i, dbThrd.Op.LINK, dbThrd.Col.CALENDAR, 0, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i))));
             threads.get(i).start();
         }
         for (i = 0; i < NUM_THREADS; ++i) {
@@ -65,7 +65,7 @@ public class testDriverOps {
         }
         for (i = 0; i < NUM_THREADS/4; ++i) {
 
-           // threads.set(i, new dbResolverThrd(i, dbThrd.Op.REMOVE, dbThrd.Col.CALENDAR, 0, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i, "tacos" + (i + 2)))));
+           // threads.set(i, new dbResolverThrd(i, dbThrd.Op.UNLINK, dbThrd.Col.CALENDAR, 0, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i, "tacos" + (i + 2)))));
             threads.get(i).start();
         }
         for (i = 0; i < NUM_THREADS/2; ++i) {

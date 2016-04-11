@@ -14,7 +14,7 @@ public class BooleanFile extends File<Boolean> {
         this(Boolean.parseBoolean(value), myPath );
     }
 
-    public BooleanFile( Boolean value, Path myPath, boolean exists ) {
+    private BooleanFile(Boolean value, Path myPath, boolean exists) {
         super( value, myPath, exists );
     }
 

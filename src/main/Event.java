@@ -16,12 +16,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Event extends Collection {
     // a unique id for each event to have
-    static AtomicInteger __id  = new AtomicInteger();
-    String getNextID() {
+    private static AtomicInteger __id  = new AtomicInteger(0);
+    private String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
         m_id = id.intValue();
         return s;
+    }
+
+    public static void resetIDs(){
+        __id = new AtomicInteger(0);
     }
 
     public Event( Path myPath, StringFile title, StringFile location, StringFile description, StringFile date, StringFile category, FloatFile cost ) {

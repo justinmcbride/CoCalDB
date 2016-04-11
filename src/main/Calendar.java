@@ -10,12 +10,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Calendar extends Collection {
     // a unique id for each calendar to have
-    static AtomicInteger __id = new AtomicInteger();
-    String getNextID() {
+    private static AtomicInteger __id = new AtomicInteger(0);
+    private String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
         m_id = id.intValue();
         return s;
+    }
+
+    public static void resetIDs(){
+        __id = new AtomicInteger(0);
     }
 
     public Calendar( Path myPath, StringFile title, ReferenceList owner, ReferenceList events ) {

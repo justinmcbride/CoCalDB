@@ -22,7 +22,7 @@ import java.nio.file.Paths;
  * jetty documentation:  http://download.eclipse.org/jetty/stable-9/apidocs/
  * jetty tutorial:  https://www.eclipse.org/jetty/documentation/current/embedding-jetty.html
  */
-public class dbHandlerThrd extends AbstractHandler {
+class dbHandlerThrd extends AbstractHandler {
 
     protected void doGet( HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException{

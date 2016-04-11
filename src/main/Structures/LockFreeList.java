@@ -2,6 +2,7 @@ package main.Structures;
 
 import main.Collection;
 
+import main.Exceptions.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
 public class LockFreeList<T extends Collection> extends AbstractConcurrentList<T> {
@@ -9,58 +10,93 @@ public class LockFreeList<T extends Collection> extends AbstractConcurrentList<T
 
 
     public LockFreeList() {
-        super();
-        m_head = new Node(null);
-        m_tail = new Node(null);
+        super(false);
         m_head.m_next = new AtomicMarkableReference(m_tail, false);
         m_tail.m_next = new AtomicMarkableReference(null, false);
-        m_head.next = m_tail;
-        m_tail_pred = m_head;
     }
 
     public boolean Add(T newValue) {
         boolean splice;
         while(true){
-            Node pred = m_tail_pred; Node curr = m_tail;
-            Node node = new Node(newValue);
-            node.m_next = new AtomicMarkableReference<>(curr, false);
-            if (pred.m_next.compareAndSet(curr, node, false, false)) {
-                node.next = curr;
-                pred.next = node;
-                m_tail_pred = node;
-                m_listsize.incrementAndGet();
-                return true; }
+            Window window = find(newValue.GetID());
+            Node pred = window.pred; Node curr = window.curr;
+            if (curr.getID() == newValue.GetID()) {
+                return false;
+            } else {
+                Node newNode = new Node(newValue);
+                newNode.m_next = new AtomicMarkableReference<>(curr, false);
+                if (pred.m_next.compareAndSet(curr, newNode, false, false)) {
+                    m_listsize.incrementAndGet();
+                    return true;
+                }
+            }
         }
 
     }
 
-    public boolean isEmpty(){
-        return m_tail == m_head;
-    }
-
-    @Override
-    public T Remove(int dID) {
+    public T Remove(Integer dID) throws NoSuchElementException {
         Boolean snip;
         while (true){
             Window window = find(dID);
             if (window == null) { return null; }
             Node pred = window.pred; Node curr = window.curr;
-            Node succ = (Node) curr.m_next.getReference();
-            snip = curr.m_next.compareAndSet(succ, succ, false, true);
-            if (!snip) continue;
-            pred.m_next.compareAndSet(curr,succ,false,false);
-            pred.next = succ;
-            m_listsize.decrementAndGet();
-            return (T) curr.getVal();
+            if ( !curr.getID().equals(dID) ) {
+                throw new NoSuchElementException(this);
+            } else {
+                Node succ = (Node) curr.m_next.getReference();
+                snip = curr.m_next.compareAndSet(succ, succ, false, true);
+                if (!snip)
+                    continue;
+                pred.m_next.compareAndSet(curr,succ,false,false);
+                m_listsize.decrementAndGet();
+                return (T) curr.getVal();
+            }
+
         }
     }
 
+    @Override
+    public <T extends Collection> T get(Integer ID) throws NoSuchElementException {
+        Node curr = (Node) m_head.m_next.getReference();
+        if (curr.m_next.getReference() == null || curr == null) { return null; }
+        while (curr.getVal().GetID() < ID){
+            if ( curr.m_next.getReference() != m_tail) {
+                curr = (Node) curr.m_next.getReference();
+            } else {
+                return null;
+            }
+        }
+        //System.out.println("compare " + curr.getID() + " == " + ID + " = " + curr.getID().equals(ID));
+        if (curr.getID().equals(ID)) {
+            return (T) curr.getVal();
+        } else {
+            throw new NoSuchElementException(this);
+        }
+    }
+
+    protected Window find(Integer key){ return find(m_head, key); }
+
+    @Override
+    protected Window find(Node head, Integer key){
+        Node curr = (Node) head.m_next.getReference();
+        if (curr == null) { return null; } // list would have to be broken
+        Node pred = head;
+        while(curr.getID() < key) {
+            pred = curr;
+            if(curr.m_next.getReference() != null) { //curr.next != tail
+                curr = (Node) curr.m_next.getReference();
+            }
+            else { return null; }
+        }
+        return new Window(pred, curr);
+    }
+
     public String toString(){
-        Node curr = m_head.next;
+        Node curr = m_head;
         String ret = "Calendar len " + m_listsize + ": ";
         while(curr != null){
-            if ( curr.getVal() != null) ret = ret + curr.getVal().GetID() + ", ";
-            curr = curr.next;
+            if ( curr.getVal() != null) ret = ret + curr.getID() + ", ";
+            curr = (Node) curr.m_next.getReference();
         }
         return ret;
     }
@@ -69,6 +105,7 @@ public class LockFreeList<T extends Collection> extends AbstractConcurrentList<T
         return false;
     }
 
+    public boolean isEmpty() { return m_head.m_next.getReference() == m_tail; }
 
 
 

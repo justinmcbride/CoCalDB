@@ -14,12 +14,16 @@ import static main.Entities.FileHelper.CreateDirectory;
  */
 public class Group extends Collection {
     // a unique id for group event to have
-    static AtomicInteger __id  = new AtomicInteger();
-    String getNextID() {
+    private static AtomicInteger __id  = new AtomicInteger(0);
+    private String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
         m_id = id.intValue();
         return s;
+    }
+
+    public static void resetIDs(){
+        __id = new AtomicInteger(0);
     }
 
     public Group( Path parentPath, List<String> data ) {

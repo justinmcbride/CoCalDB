@@ -16,11 +16,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by Justin
  */
 public abstract class Collection {
-  protected Map<String, ReferenceList> m_references = new HashMap<>() ;
-  protected Map<String, File<?>> m_attributes = new HashMap<>();
+  Map<String, ReferenceList> m_references = new HashMap<>() ;
+  Map<String, File<?>> m_attributes = new HashMap<>();
   protected Integer m_id = null;
-  protected java.nio.file.Path m_filepath;
-  public ReentrantLock m_lock = new ReentrantLock(true);
+  java.nio.file.Path m_filepath;
+  private ReentrantLock m_lock = new ReentrantLock(true);
 
   public Integer GetID() {
     return m_id;
@@ -84,6 +84,6 @@ public abstract class Collection {
     FileHelper.Delete( m_filepath );
   }
 
-  public void lock() { m_lock.lock(); }
-  public void unlock() { m_lock.unlock(); }
+  private void lock() { m_lock.lock(); }
+  private void unlock() { m_lock.unlock(); }
 }

@@ -11,12 +11,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public class User extends Collection {
-    static AtomicInteger __id  = new AtomicInteger();
-    String getNextID() {
+    private static AtomicInteger __id  = new AtomicInteger(0);
+    private String getNextID() {
         Integer id = __id.getAndIncrement();
         String s = id.toString();
         m_id = id.intValue();
         return s;
+    }
+
+    public static void resetIDs(){
+        __id = new AtomicInteger(0);
     }
 
     public User( Path myPath, StringFile name, StringFile email, StringFile password, BooleanFile isadmin, ReferenceList groups ) {

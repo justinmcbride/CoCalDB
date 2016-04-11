@@ -11,7 +11,7 @@ import java.text.ParseException;
  */
 public class FloatFile extends File<Float> {
 
-    public FloatFile( Float value, Path myPath ) {
+    private FloatFile(Float value, Path myPath) {
         super( value, myPath );
     }
 
@@ -19,7 +19,7 @@ public class FloatFile extends File<Float> {
         this( Float.parseFloat(value), myPath );
     }
 
-    public FloatFile( Float value, Path myPath, boolean exists ) {
+    private FloatFile(Float value, Path myPath, boolean exists) {
         super( value, myPath, exists );
     }
 

@@ -9,7 +9,7 @@ package main.Structures;
 public final class MicroMap<K, V> implements java.io.Serializable
 {
     private static final long serialVersionUID = 1L;
-    public static final int MAX_ENTRIES = 1;
+    private static final int MAX_ENTRIES = 1;
     private K key;
     private V value;
 
@@ -18,7 +18,7 @@ public final class MicroMap<K, V> implements java.io.Serializable
 
     public boolean isFull() {return size() == MAX_ENTRIES;}
 
-    public int size() {return (key != null) ? 1 : 0;}
+    private int size() {return (key != null) ? 1 : 0;}
 
     public boolean isEmpty() {return size() == 0;}
 
@@ -38,7 +38,7 @@ public final class MicroMap<K, V> implements java.io.Serializable
             return value;
         return null;
     }
-    public V put(final K key, final V value) {
+    private V put(final K key, final V value) {
         if (key.equals(this.key)){ // Replace?
             final V oldValue = this.value;
             this.value = value;

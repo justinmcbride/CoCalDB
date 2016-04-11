@@ -14,7 +14,7 @@ import java.util.Arrays;
  *
  * Test file for basic cocal db system using direct file access
  */
-public class testDriver1 {
+class testDriver1 {
 
     public static void main(String[] args) {
         Path path_database = Paths.get(System.getProperty("user.dir")).resolve("testDB");
@@ -22,14 +22,14 @@ public class testDriver1 {
 
         Database DB = Database.GetDB();
 
-        int number_of_tests = 5;
+        int number_of_tests = 1;
 
         ArrayList<Integer> number_of_threads = new ArrayList<>();
         number_of_threads.add( 1 );
         number_of_threads.add( 3 );
-//        number_of_threads.add( 6 );
-//        number_of_threads.add( 9 );
-//        number_of_threads.add( 15 );
+        number_of_threads.add( 6 );
+        number_of_threads.add( 9 );
+        number_of_threads.add( 15 );
 
         ArrayList<String> types_of_lists = new ArrayList<>();
         types_of_lists.add( "Lazy" );
@@ -60,7 +60,7 @@ public class testDriver1 {
 
                     for( int i = 0; i < nThreads; ++i ) {
 
-                        threads.add(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, i, Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
+                        threads.add(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, new Integer(i), Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
                         threads.get(i).start();
                     }
                     for( int i = 0; i < nThreads; ++i ) {
@@ -72,7 +72,7 @@ public class testDriver1 {
 
                     for( int i = 0; i < nThreads; ++i ) {
 
-                        threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i));
+                        threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, new Integer(i)));
                         threads.get(i).start();
                     }
                     for( int i = 0; i < nThreads; ++i ) {
@@ -82,7 +82,8 @@ public class testDriver1 {
                     }
                     long endTime = System.nanoTime();
                     long duration = endTime - startTime;
-                    System.out.println( list_type + "," + nThreads + "," + duration );
+                    System.out.println( list_type + ", " + nThreads + ", took " + duration + " ns" );
+                    //System.out.println( DB.m_collection_calendars );
                 } // end nThreads
             } // end number_of_tests loop
         } // end types of lists loop
