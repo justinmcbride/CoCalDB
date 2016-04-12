@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by justinmcbride on 3/23/16.
@@ -23,6 +26,7 @@ class testDriver1 {
         Database DB = Database.GetDB();
 
         int number_of_tests = 1;
+        int number_of_tasks = 15;
 
         ArrayList<Integer> number_of_threads = new ArrayList<>();
         number_of_threads.add( 1 );
@@ -35,6 +39,14 @@ class testDriver1 {
         types_of_lists.add( "Lazy" );
         types_of_lists.add( "LockFree" );
 
+        /* Total number of processors or cores available to the JVM */
+        System.out.println("Available processors (cores): " + Runtime.getRuntime().availableProcessors());
+
+        /* Total amount of free memory available to the JVM */
+        System.out.println("Free memory (bytes): " + Runtime.getRuntime().freeMemory());
+
+        /* Total memory currently available to the JVM */
+        System.out.println("Total memory available to JVM (bytes): " + Runtime.getRuntime().totalMemory());
 
         System.out.println( "list_type,number_of_threads,duration" );
         for( String list_type : types_of_lists )
@@ -45,40 +57,51 @@ class testDriver1 {
                 {
                     DB.Initialize( path_database, list_type, true );
                     long startTime = System.nanoTime();
-                    ArrayList<dbResolverThrd> threads = new ArrayList<>();
 
-                    for( int i = 0; i < nThreads; ++i ) {
-                        threads.add(new dbResolverThrd(i, dbThrd.Op.CREATE, dbThrd.Col.CALENDAR, Arrays.asList("Ca" + i, "justin")));
-                        threads.get(i).start();
-                    }
-                    for( int i = 0; i < nThreads; ++i ) {
-                        try {
-                            threads.get(i).join();
-                        } catch (InterruptedException e) {}
-                    }
-                    threads.clear();
+                    ExecutorService manager = Executors.newFixedThreadPool( nThreads );
 
-                    for( int i = 0; i < nThreads; ++i ) {
-
-                        threads.add(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, new Integer(i), Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
-                        threads.get(i).start();
+                    // do all the first creations
+                    for( int i = 0; i < number_of_tasks; ++i ) {
+                        manager.submit(new dbResolverThrd(i, dbThrd.Op.CREATE, dbThrd.Col.CALENDAR, Arrays.asList("Ca" + i, "justin")));
                     }
-                    for( int i = 0; i < nThreads; ++i ) {
-                        try {
-                            threads.get(i).join();
-                        } catch (InterruptedException e) {}
-                    }
-                    threads.clear();
 
-                    for( int i = 0; i < nThreads; ++i ) {
-
-                        threads.add(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, new Integer(i)));
-                        threads.get(i).start();
+                    manager.shutdown();
+                    try {
+                        manager.awaitTermination(3, TimeUnit.SECONDS);
                     }
-                    for( int i = 0; i < nThreads; ++i ) {
-                        try {
-                            threads.get(i).join();
-                        } catch (InterruptedException e) {}
+                    catch( InterruptedException e ) {
+                        manager.shutdownNow();
+                        Thread.currentThread().interrupt();
+                    }
+
+                    // do a bunch of edits
+                    manager = Executors.newFixedThreadPool( nThreads );
+                    for( int i = 0; i < number_of_tasks; ++i ) {
+
+                        manager.submit(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, new Integer(i), Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
+                    }
+
+                    manager.shutdown();
+                    try {
+                        manager.awaitTermination(3, TimeUnit.SECONDS);
+                    }
+                    catch( InterruptedException e ) {
+                        manager.shutdownNow();
+                        Thread.currentThread().interrupt();
+                    }
+
+                    // do a bunch of deletions
+                    manager = Executors.newFixedThreadPool( nThreads );
+                    for( int i = 0; i < number_of_tasks; ++i ) {
+                        manager.submit(new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, new Integer(i)));
+                    }
+                    manager.shutdown();
+                    try {
+                        manager.awaitTermination(3, TimeUnit.SECONDS);
+                    }
+                    catch( InterruptedException e ) {
+                        manager.shutdownNow();
+                        Thread.currentThread().interrupt();
                     }
                     long endTime = System.nanoTime();
                     long duration = endTime - startTime;
