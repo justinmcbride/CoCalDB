@@ -14,6 +14,7 @@ public class dbResolverThrd  extends dbThrd  {
     private List<MicroMap<String, String>> m_edits;
     private List<String> m_data;
     private Integer m_dID; // document ID
+    private MicroMap<String, List<String>> m_refList; // referenceList being modified
 
 
     // constructor for event creation
@@ -30,6 +31,11 @@ public class dbResolverThrd  extends dbThrd  {
     public dbResolverThrd(int tID, Op op, Col col, Integer dID){
         super(tID,op,col);
         m_dID = dID;
+    }
+    // constructor for adding or removing references
+    public dbResolverThrd(int tID, Op op, Col col, Integer dID , MicroMap<String, List<String>> refList){
+        this(tID,op,col,dID);
+        m_refList = refList;
     }
 
 
@@ -123,25 +129,30 @@ public class dbResolverThrd  extends dbThrd  {
             }
         }
     }
-    private void readDocument(){
-
-    }
 
     private void read() throws NoSuchElementException {
-//        switch (m_col) {
-//            case CALENDAR: {
-//                this.readDocument("calendars"); break;
-//            }
-//            case EVENT: {
-//                this.readDocument("events"); break;
-//            }
-//            case GROUP: {
-//                this.readDocument("groups"); break;
-//            }
-//            case USER: {
-//                this.readDocument("users"); break;
-//            }
-//        }
+        switch (m_col) {
+            case CALENDAR:{
+                Calendar c = db.m_collection_calendars.get(m_dID);
+                if( c!= null ) System.err.println(c.getClass() + " read: " + c);
+                break;
+            }
+            case EVENT: {
+                Event c = db.m_collection_events.get(m_dID);
+                if( c!= null ) System.err.println(c.getClass() + " read: " + c);
+                break;
+            }
+            case GROUP: {
+                Group c = db.m_collection_groups.get(m_dID);
+                if( c!= null ) System.err.println(c.getClass() + " read: " + c);
+                break;
+            }
+            case USER: {
+                User c = db.m_collection_users.get(m_dID);
+                if( c!= null ) System.err.println(c.getClass() + " read: " + c);
+                break;
+            }
+        }
     }
 
     private void delete() throws NoSuchElementException {
@@ -174,33 +185,51 @@ public class dbResolverThrd  extends dbThrd  {
     }
 
     private void link() throws NoSuchElementException {
-//        switch (m_col) {
-//            case CALENDAR: {
-//                Calendar c = db.m_collection_calendars.Remove(m_dID);
-//                if( c != null )
-//                    c.delete();
-//                break;
-//            }
-//            case EVENT: {
-//                Event c = db.m_collection_events.Remove(m_dID);
-//                if( c != null )
-//                    c.delete();
-//                break;
-//            }
-//            case GROUP: {
-//                Group c = db.m_collection_groups.Remove(m_dID);
-//                if( c != null )
-//                    c.delete();
-//                break;
-//            }
-//            case USER: {
-//                User c = db.m_collection_users.Remove(m_dID);
-//                if( c != null )
-//                    c.delete();
-//                break;
-//            }
-//        }
+        switch (m_col) {
+            case CALENDAR:{
+                Calendar c = db.m_collection_calendars.get(m_dID);
+                if( c!= null ) c.link(m_refList);
+                break;
+            }
+            case EVENT: {
+                Event c = db.m_collection_events.get(m_dID);
+                if( c!= null ) c.link(m_refList);
+                break;
+            }
+            case GROUP: {
+                Group c = db.m_collection_groups.get(m_dID);
+                if( c!= null ) c.link(m_refList);
+                break;
+            }
+            case USER: {
+                User c = db.m_collection_users.get(m_dID);
+                if( c!= null ) c.link(m_refList);
+                break;
+            }
+        }
     }
     private void unlink() throws NoSuchElementException {
+        switch (m_col) {
+            case CALENDAR:{
+                Calendar c = db.m_collection_calendars.get(m_dID);
+                if( c!= null ) c.unlink(m_refList);
+                break;
+            }
+            case EVENT: {
+                Event c = db.m_collection_events.get(m_dID);
+                if( c!= null ) c.unlink(m_refList);
+                break;
+            }
+            case GROUP: {
+                Group c = db.m_collection_groups.get(m_dID);
+                if( c!= null ) c.unlink(m_refList);
+                break;
+            }
+            case USER: {
+                User c = db.m_collection_users.get(m_dID);
+                if( c!= null ) c.unlink(m_refList);
+                break;
+            }
+        }
     }
 }

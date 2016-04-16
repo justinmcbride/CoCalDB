@@ -92,6 +92,9 @@ public abstract class File<T> {
         SetValue(ConvertValue(newValue), true);
     }
 
+    public String toString(){
+        return m_value.toString();
+    }
 //    public void SetValue( T newValue ) {
 //        SetValue( newValue, false );
 //    }

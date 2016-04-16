@@ -19,4 +19,8 @@ public class ReferenceFile extends File<String> {
     ReferenceFile( Path myPath, boolean exists ) {
         super( "",  myPath, true );
     }
+
+    public String toString(){
+        return m_fileLocation.getFileName().toString();
+    }
 }

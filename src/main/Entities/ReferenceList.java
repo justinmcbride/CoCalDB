@@ -81,25 +81,29 @@ public class ReferenceList {
     }
 
     public boolean remRefs(List<String> remRefs){
-        Iterator filItr = m_list.iterator();
-        int i = remRefs.size();
-        while ( filItr.hasNext() && !remRefs.isEmpty() ){
-            ReferenceFile curr = (ReferenceFile) filItr.next();
-            String ref = curr.m_fileLocation.getFileName().toString();
-            System.out.println("Looking for match to delete " + ref);
-            Iterator remItr = remRefs.iterator();
-            while ( remItr.hasNext() ){
-                Object rem = remItr.next();
-                System.out.println("Trying to match " + rem);
+        Iterator remItr = remRefs.iterator();
+        while ( remItr.hasNext() ){
+            String rem = (String) remItr.next();
+            Iterator filItr = m_list.iterator();
+            while ( filItr.hasNext() && !remRefs.isEmpty() ){
+                ReferenceFile curr = (ReferenceFile) filItr.next();
+                String ref = curr.m_fileLocation.getFileName().toString();
                 if ( ref.equals(rem) ) {
-                    System.out.println("MATCH");
-                    remRefs.remove(rem);
                     m_list.remove(curr);
                     FileHelper.Delete( curr.m_fileLocation );
                 }
             }
         }
         return remRefs.isEmpty();
+    }
+
+    public String toString(){
+        String ret = "";
+        Iterator<ReferenceFile> itrRef = m_list.iterator();
+        while (itrRef.hasNext()) {
+            ret += itrRef.next().toString() + ", ";
+        }
+        return ret;
     }
 
 }

@@ -55,4 +55,11 @@ public class Event extends Collection {
     public void refresh() {
 
     }
+
+    public String toString(){
+        String ret = "";
+
+
+        return ret;
+    }
 }

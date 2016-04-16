@@ -10,6 +10,7 @@ import java.text.ParseException;
  * Concrete class for File<String>
  */
 public class StringFile extends File<String> {
+
     public StringFile( String value, Path myPath ) {
         super( value, myPath );
     }
