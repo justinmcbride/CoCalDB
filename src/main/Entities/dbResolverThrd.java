@@ -123,25 +123,25 @@ public class dbResolverThrd  extends dbThrd  {
             }
         }
     }
-    private void readDocument(String col){
+    private void readDocument(){
 
     }
 
     private void read() throws NoSuchElementException {
-        switch (m_col) {
-            case CALENDAR: {
-                this.readDocument("calendars"); break;
-            }
-            case EVENT: {
-                this.readDocument("events"); break;
-            }
-            case GROUP: {
-                this.readDocument("groups"); break;
-            }
-            case USER: {
-                this.readDocument("users"); break;
-            }
-        }
+//        switch (m_col) {
+//            case CALENDAR: {
+//                this.readDocument("calendars"); break;
+//            }
+//            case EVENT: {
+//                this.readDocument("events"); break;
+//            }
+//            case GROUP: {
+//                this.readDocument("groups"); break;
+//            }
+//            case USER: {
+//                this.readDocument("users"); break;
+//            }
+//        }
     }
 
     private void delete() throws NoSuchElementException {

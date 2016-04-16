@@ -30,10 +30,10 @@ class testDriver1 {
 
         ArrayList<Integer> number_of_threads = new ArrayList<>();
         number_of_threads.add( 1 );
-        number_of_threads.add( 3 );
-        number_of_threads.add( 6 );
-        number_of_threads.add( 9 );
-        number_of_threads.add( 15 );
+        number_of_threads.add( 2 );
+        number_of_threads.add( 4 );
+        number_of_threads.add( 8 );
+        number_of_threads.add( 16 );
 
         ArrayList<String> types_of_lists = new ArrayList<>();
         types_of_lists.add( "Lazy" );
