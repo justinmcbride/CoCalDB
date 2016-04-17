@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  *
  * Test file for basic cocal db system using direct file access
  */
-class testDriver1 {
+class testDriverExecutor {
 
     public static void main(String[] args) {
         Path path_database = Paths.get(System.getProperty("user.dir")).resolve("testDB");
@@ -26,7 +26,7 @@ class testDriver1 {
         Database DB = Database.GetDB();
 
         int number_of_tests = 1;
-        int number_of_tasks = 15;
+        int number_of_tasks = 16;
 
         ArrayList<Integer> number_of_threads = new ArrayList<>();
         number_of_threads.add( 1 );
@@ -34,6 +34,7 @@ class testDriver1 {
         number_of_threads.add( 4 );
         number_of_threads.add( 8 );
         number_of_threads.add( 16 );
+
 
         ArrayList<String> types_of_lists = new ArrayList<>();
         types_of_lists.add( "Lazy" );
@@ -78,7 +79,7 @@ class testDriver1 {
                     manager = Executors.newFixedThreadPool( nThreads );
                     for( int i = 0; i < number_of_tasks; ++i ) {
 
-                        manager.submit(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, new Integer(i), Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
+                        manager.submit(new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, new Integer(i), Arrays.asList(new MicroMap<>("title", "TEST"))));
                     }
 
                     manager.shutdown();

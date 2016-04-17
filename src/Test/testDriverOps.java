@@ -36,25 +36,25 @@ class testDriverOps {
         DB.Initialize( path_database, "Lazy", true );
 
         int i = 0;
-        int NUM_THREADS = 6;
+        int nTasks = 6;
         ArrayList<dbResolverThrd> threads = new ArrayList<>();
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < nTasks; ++i) {
             threads.add(new dbResolverThrd(i, dbThrd.Op.CREATE, dbThrd.Col.CALENDAR, Arrays.asList("Ca" + i, "justin")));
             threads.get(i).start();
         }
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < nTasks; ++i) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
         }
 
         System.out.println(DB.m_collection_calendars);
-        for (i = 0; i < NUM_THREADS/2; ++i) {
+        for (i = 0; i < nTasks/2; ++i) {
 
             threads.set(i,new dbResolverThrd(i, dbThrd.Op.EDIT, dbThrd.Col.CALENDAR, i, Arrays.asList(new MicroMap<String,String>("title", "TEST"))));
             threads.get(i).start();
         }
-        for (i = 0; i < NUM_THREADS/2; ++i) {
+        for (i = 0; i < nTasks/2; ++i) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
@@ -62,45 +62,45 @@ class testDriverOps {
 
 
 
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < nTasks; ++i) {
 
             threads.set(i, new dbResolverThrd(i, dbThrd.Op.LINK, dbThrd.Col.CALENDAR, i, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i, "tacos" + (2*i), "tacos" + 3*i, "tacos" + 4*i))));
             threads.get(i).start();
         }
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < nTasks; ++i) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
         }
 
-        for (i = 0; i < NUM_THREADS; ++i) {
+//        for (i = 0; i < NUM_THREADS; ++i) {
+//
+//            threads.set(i, new dbResolverThrd(i, dbThrd.Op.UNLINK, dbThrd.Col.CALENDAR, i, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i))));
+//            threads.get(i).start();
+//        }
+//        for (i = 0; i < NUM_THREADS; ++i) {
+//            try {
+//                threads.get(i).join();
+//            } catch (InterruptedException e) {}
+//        }
 
-            threads.set(i, new dbResolverThrd(i, dbThrd.Op.UNLINK, dbThrd.Col.CALENDAR, i, new MicroMap<String,List<String>>("events", Arrays.asList("tacos" + i))));
-            threads.get(i).start();
-        }
-        for (i = 0; i < NUM_THREADS; ++i) {
-            try {
-                threads.get(i).join();
-            } catch (InterruptedException e) {}
-        }
-
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < nTasks; ++i) {
 
             threads.set(i,new dbResolverThrd(i, dbThrd.Op.READ, dbThrd.Col.CALENDAR, i));
             threads.get(i).start();
         }
-        for (i = 0; i < NUM_THREADS; ++i) {
+        for (i = 0; i < nTasks; ++i) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
         }
 
-        for (i = 0; i < NUM_THREADS/2; ++i) {
+        for (i = 0; i < nTasks/2; ++i) {
 
             threads.set(i,new dbResolverThrd(i, dbThrd.Op.DELETE, dbThrd.Col.CALENDAR, i ));
             threads.get(i).start();
         }
-        for (i = 0; i < NUM_THREADS/2; ++i) {
+        for (i = 0; i < nTasks/2; ++i) {
             try {
                 threads.get(i).join();
             } catch (InterruptedException e) {}
