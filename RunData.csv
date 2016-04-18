@@ -1,0 +1,53 @@
+num_processors, number of tasks, list_type, thread limit, average duration(ms)
+8, 1, Lazy, 64, 9
+8, 1, LockFree, 64, 15
+8, 2, Lazy, 64, 8
+8, 2, LockFree, 64, 7
+8, 4, Lazy, 64, 11
+8, 4, LockFree, 64, 9
+8, 8, Lazy, 64, 17
+8, 8, LockFree, 64, 14
+8, 16, Lazy, 64, 20
+8, 16, LockFree, 64, 22
+8, 32, Lazy, 64, 52
+8, 32, LockFree, 64, 34
+8, 128, Lazy, 64, 134
+8, 128, LockFree, 64, 129
+8, 256, Lazy, 64, 282
+8, 256, LockFree, 64, 260
+8, 512, Lazy, 64, 514
+8, 512, LockFree, 64, 514
+8, 1028, Lazy, 64, 1055
+8, 1028, LockFree, 64, 1056
+8, 2048, Lazy, 64, 2230
+8, 2048, LockFree, 64, 2271
+8, 4096, Lazy, 64, 4618
+8, 4096, LockFree, 64, 4678
+
+
+
+num_processors, number of tasks, list_type, pool size, average duration(ms)
+8, 1, Lazy, 64, 14
+8, 1, LockFree, 64, 6
+8, 2, Lazy, 64, 7
+8, 2, LockFree, 64, 7
+8, 4, Lazy, 64, 9
+8, 4, LockFree, 64, 9
+8, 8, Lazy, 64, 14
+8, 8, LockFree, 64, 12
+8, 16, Lazy, 64, 21
+8, 16, LockFree, 64, 18
+8, 32, Lazy, 64, 32
+8, 32, LockFree, 64, 31
+8, 128, Lazy, 64, 144
+8, 128, LockFree, 64, 138
+8, 256, Lazy, 64, 299
+8, 256, LockFree, 64, 275
+8, 512, Lazy, 64, 543
+8, 512, LockFree, 64, 504
+8, 1024, Lazy, 64, 999
+8, 1024, LockFree, 64, 988
+8, 2048, Lazy, 64, 2038
+8, 2048, LockFree, 64, 1864
+8, 4096, Lazy, 64, 3925
+8, 4096, LockFree, 64, 4192
