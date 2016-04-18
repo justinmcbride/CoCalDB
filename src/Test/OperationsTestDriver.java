@@ -14,7 +14,7 @@ import java.util.List;
  *
  * Test file for basic cocal db system using direct file access
  */
-class testDriverOps {
+class OperationsTestDriver {
 
     public static void main(String[] args) {
         //Path pDB = Paths.get(System.getProperty("user.home"));
