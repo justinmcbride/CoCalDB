@@ -51,3 +51,133 @@ num_processors, number of tasks, list_type, pool size, average duration(ms)
 8, 2048, LockFree, 64, 1864
 8, 4096, Lazy, 64, 3925
 8, 4096, LockFree, 64, 4192
+
+2.6 GHz Intel Core i5
+8GB Ram
+Threadspawn Test Driver
+Available processors (cores): 4
+Free memory (bytes): 125566512
+Total memory available to JVM (bytes): 128974848
+Running 3 trials, throwing away max and min
+num_processors, number of tasks, list_type, thread limit, average duration(ms)
+4, 1, Lazy, 64, 3
+4, 1, LockFree, 64, 2
+4, 2, Lazy, 64, 3
+4, 2, LockFree, 64, 7
+4, 4, Lazy, 64, 5
+4, 4, LockFree, 64, 5
+4, 8, Lazy, 64, 8
+4, 8, LockFree, 64, 23
+4, 16, Lazy, 64, 56
+4, 16, LockFree, 64, 45
+4, 32, Lazy, 64, 71
+4, 32, LockFree, 64, 25
+4, 128, Lazy, 64, 91
+4, 128, LockFree, 64, 116
+4, 256, Lazy, 64, 210
+4, 256, LockFree, 64, 231
+4, 512, Lazy, 64, 437
+4, 512, LockFree, 64, 439
+4, 1024, Lazy, 64, 857
+4, 1024, LockFree, 64, 623
+4, 2048, Lazy, 64, 1161
+4, 2048, LockFree, 64, 1218
+4, 4096, Lazy, 64, 2617
+4, 4096, LockFree, 64, 2463
+
+2.6 GHz Intel Core i5
+8GB Ram
+Executor Test Driver
+Available processors (cores): 4
+Free memory (bytes): 125566768
+Total memory available to JVM (bytes): 128974848
+Running 3 trials, throwing away max and min
+num_processors, number of tasks, list_type, pool size, average duration(ms)
+4, 1, Lazy, 64, 2
+4, 1, LockFree, 64, 3
+4, 2, Lazy, 64, 6
+4, 2, LockFree, 64, 3
+4, 4, Lazy, 64, 6
+4, 4, LockFree, 64, 10
+4, 8, Lazy, 64, 41
+4, 8, LockFree, 64, 29
+4, 16, Lazy, 64, 75
+4, 16, LockFree, 64, 14
+4, 32, Lazy, 64, 47
+4, 32, LockFree, 64, 57
+4, 128, Lazy, 64, 129
+4, 128, LockFree, 64, 100
+4, 256, Lazy, 64, 155
+4, 256, LockFree, 64, 109
+4, 512, Lazy, 64, 670
+4, 512, LockFree, 64, 278
+4, 1024, Lazy, 64, 655
+4, 1024, LockFree, 64, 472
+4, 2048, Lazy, 64, 1201
+4, 2048, LockFree, 64, 1121
+4, 4096, Lazy, 64, 2872
+4, 4096, LockFree, 64, 1960
+
+Intel i7-4790 16GB Ram
+Threadspawn Test Driver
+Available processors (cores): 8
+Free memory (bytes): 251333128
+Total memory available to JVM (bytes): 255328256
+Running 3 trials, throwing away max and min
+num_processors, number of tasks, list_type, thread limit, average duration(ms)
+8, 1, Lazy, 64, 2
+8, 1, LockFree, 64, 2
+8, 2, Lazy, 64, 2
+8, 2, LockFree, 64, 3
+8, 4, Lazy, 64, 4
+8, 4, LockFree, 64, 4
+8, 8, Lazy, 64, 8
+8, 8, LockFree, 64, 7
+8, 16, Lazy, 64, 11
+8, 16, LockFree, 64, 12
+8, 32, Lazy, 64, 18
+8, 32, LockFree, 64, 17
+8, 128, Lazy, 64, 157
+8, 128, LockFree, 64, 130
+8, 256, Lazy, 64, 210
+8, 256, LockFree, 64, 199
+8, 512, Lazy, 64, 371
+8, 512, LockFree, 64, 360
+8, 1024, Lazy, 64, 814
+8, 1024, LockFree, 64, 770
+8, 2048, Lazy, 64, 1603
+8, 2048, LockFree, 64, 1658
+8, 4096, Lazy, 64, 3500
+8, 4096, LockFree, 64, 3456
+
+Intel i7-4790 16GB Ram
+Executor Test Driver
+Available processors (cores): 8
+Free memory (bytes): 251333128
+Total memory available to JVM (bytes): 255328256
+Running 3 trials, throwing away max and min
+num_processors, number of tasks, list_type, pool size, average duration(ms)
+8, 1, Lazy, 64, 2
+8, 1, LockFree, 64, 2
+8, 2, Lazy, 64, 3
+8, 2, LockFree, 64, 3
+8, 4, Lazy, 64, 3
+8, 4, LockFree, 64, 4
+8, 8, Lazy, 64, 6
+8, 8, LockFree, 64, 6
+8, 16, Lazy, 64, 11
+8, 16, LockFree, 64, 11
+8, 32, Lazy, 64, 17
+8, 32, LockFree, 64, 16
+8, 128, Lazy, 64, 98
+8, 128, LockFree, 64, 84
+8, 256, Lazy, 64, 165
+8, 256, LockFree, 64, 174
+8, 512, Lazy, 64, 363
+8, 512, LockFree, 64, 316
+8, 1024, Lazy, 64, 671
+8, 1024, LockFree, 64, 665
+8, 2048, Lazy, 64, 1413
+8, 2048, LockFree, 64, 1396
+8, 4096, Lazy, 64, 2974
+8, 4096, LockFree, 64, 2922
