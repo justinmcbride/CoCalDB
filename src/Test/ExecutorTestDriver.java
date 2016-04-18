@@ -41,7 +41,7 @@ class ExecutorTestDriver {
         number_of_tasks.add( 1024 );
         number_of_tasks.add( 2048 );
         number_of_tasks.add( 4096 );
-        //number_of_tasks.add( 8192 );
+        number_of_tasks.add( 8192 );
         //number_of_tasks.add( 16384 );
 
         ArrayList<Integer> number_of_threads = new ArrayList<>();
